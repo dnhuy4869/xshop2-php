@@ -1,107 +1,97 @@
+<?php
+    if(isset($_POST['records-limit'])){
+        $_SESSION['records-limit'] = $_POST['records-limit'];
+    }
+
+    $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
+    $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
+    $paginationStart = ($page - 1) * $limit;
+    $listLH = pdo_query("SELECT * FROM loaihang LIMIT $paginationStart, $limit");
+
+    // Get total records
+    $sql = pdo_query("SELECT count(id) AS id FROM loaihang");
+    $allRecrods = $sql[0]['id'];
+  
+    // Calculate total pages
+    $totoalPages = ceil($allRecrods / $limit);
+
+    // Prev + Next
+    $prev = $page - 1;
+    $next = $page + 1;
+?>
+
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Danh sách loại hàng</h4>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="card-title">Danh sách loại hàng</h4>
+
+                            <!-- Select dropdown -->
+                            <div class="d-flex flex-row-reverse bd-highlight mb-3">
+                                <form action="index.php?tab=1?act=listLH" method="post">
+                                    <select name="records-limit" id="records-limit" class="custom-select">
+                                        <option disabled selected>Records Limit</option>
+                                        <?php foreach([5,7,10,12] as $limit) : ?>
+                                        <option
+                                            <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>
+                                            value="<?= $limit; ?>">
+                                            <?= $limit; ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th> # </th>
-                                    <th> First name </th>
-                                    <th> Progress </th>
-                                    <th> Amount </th>
-                                    <th> Deadline </th>
+                                    <th> ID </th>
+                                    <th> Tên loại </th>
+                                    <th style="width: 8.33%"> Thao tác </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td> 1 </td>
-                                    <td> Herman Beck </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%"
-                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $ 77.99 </td>
-                                    <td> May 15, 2015 </td>
-                                </tr>
-                                <tr>
-                                    <td> 2 </td>
-                                    <td> Messsy Adam </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"
-                                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $245.30 </td>
-                                    <td> July 1, 2015 </td>
-                                </tr>
-                                <tr>
-                                    <td> 3 </td>
-                                    <td> John Richards </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 90%"
-                                                aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $138.00 </td>
-                                    <td> Apr 12, 2015 </td>
-                                </tr>
-                                <tr>
-                                    <td> 4 </td>
-                                    <td> Peter Meggik </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 50%"
-                                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $ 77.99 </td>
-                                    <td> May 15, 2015 </td>
-                                </tr>
-                                <tr>
-                                    <td> 5 </td>
-                                    <td> Edward </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 35%"
-                                                aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $ 160.25 </td>
-                                    <td> May 03, 2015 </td>
-                                </tr>
-                                <tr>
-                                    <td> 6 </td>
-                                    <td> John Doe </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 65%"
-                                                aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $ 123.21 </td>
-                                    <td> April 05, 2015 </td>
-                                </tr>
-                                <tr>
-                                    <td> 7 </td>
-                                    <td> Henry Tom </td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%"
-                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td> $ 150.00 </td>
-                                    <td> June 16, 2015 </td>
-                                </tr>
+                                <?php
+                                    foreach ($listLH as $lh) {
+                                        $editHref = "index.php?tab=1&act=editLH&id=".$lh["id"];
+                                        $deleteHref = "index.php?tab1&act=deleteLH&id=".$lh["id"];
+                                        echo '<tr>
+                                                <td> '.$lh["id"].' </td>
+                                                <td> '.$lh["tenLoaiHang"].' </td>
+                                                <td>
+                                                    <a href='.$editHref.'><input type="button" class="btn btn-success" value="Sửa"></input></a>
+                                                    <a href='.$deleteHref.'><input type="button" class="btn btn-danger" value="Xóa"></input></a>
+                                                </td>
+                                              </tr>';
+                                    }
+                                ?>
                             </tbody>
                         </table>
+
+                        <!-- Pagination -->
+                        <nav class="mt-3 float-right">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item text-center <?php if($page <= 1){ echo 'disabled'; } ?>">
+                                    <a class="page-link"
+                                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>"><<</a>
+                                </li>
+
+                                <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+                                <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
+                                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+                                </li>
+                                <?php endfor; ?>
+
+                                <li class="page-item text-center <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                                    <a class="page-link"
+                                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">>></a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -120,4 +110,11 @@
         </div>
     </footer>
     <!-- partial -->
+    <script>
+    $(document).ready(function() {
+        $('#records-limit').change(function() {
+            $('form').submit();
+        })
+    });
+    </script>
 </div>

@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -229,6 +230,12 @@
                                 'href' => "index.php?tab=2&act=listHH",
                                 "icon" => "mdi mdi-printer-3d menu-icon"
                             ],
+                            (object) [
+                                'tab' => 3,
+                                'displayName' => 'Tài Khoản',
+                                'href' => "index.php?tab=3&act=listTK",
+                                "icon" => "mdi mdi-account menu-icon"
+                            ],
                         ];
 
                         $tab = 1;
@@ -255,6 +262,9 @@
             </nav>
             <!-- partial -->
             <?php
+                include "../models/pdo.php";
+                include "../models/loaiHang.php";
+
                 $act = "listLH";
 
                 if (isset($_GET['act'])) {
@@ -263,7 +273,6 @@
 
                 switch ($act) {
                     case "listLH": {
-   
                         include "loaiHang/list.php";
                         break;
                     }
