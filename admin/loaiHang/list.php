@@ -26,11 +26,13 @@
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Danh sách loại hàng</h4>
+                        <h4 class="card-title">Danh sách loại hàng</h4>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <a href="index.php?tab=1&act=addLHForm"><button class="btn btn-success" style="min-width: 140px;">Thêm mới</button></a>
 
                             <!-- Select dropdown -->
-                            <div class="d-flex flex-row-reverse bd-highlight mb-3">
+                            <div class="d-flex flex-row-reverse bd-highlight ">
                                 <form action="index.php?tab=1?act=listLH" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select">
                                         <option disabled selected>Records Limit</option>
@@ -57,7 +59,7 @@
                             <tbody>
                                 <?php
                                     foreach ($listLH as $lh) {
-                                        $editHref = "index.php?tab=1&act=editLH&id=".$lh["id"];
+                                        $editHref = "index.php?tab=1&act=editLHForm&id=".$lh["id"];
                                         $deleteHref = "index.php?tab1&act=deleteLH&id=".$lh["id"];
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>
@@ -77,18 +79,18 @@
                             <ul class="pagination justify-content-center">
                                 <li class="page-item text-center <?php if($page <= 1){ echo 'disabled'; } ?>">
                                     <a class="page-link"
-                                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>"><<</a>
+                                        href="<?php if($page <= 1){ echo '#'; } else { echo "?tab=1&act=listLH&page=" . $prev; } ?>"><<</a>
                                 </li>
 
                                 <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                                 <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+                                    <a class="page-link" href="index.php?tab=1&act=listLH&page=<?= $i; ?>"> <?= $i; ?> </a>
                                 </li>
                                 <?php endfor; ?>
 
                                 <li class="page-item text-center <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
                                     <a class="page-link"
-                                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">>></a>
+                                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?tab=1&act=listLH&page=". $next; } ?>">>></a>
                                 </li>
                             </ul>
                         </nav>

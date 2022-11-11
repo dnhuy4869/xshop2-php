@@ -276,6 +276,45 @@
                         include "loaiHang/list.php";
                         break;
                     }
+                    case "editLHForm": {
+                        include "loaiHang/edit.php";
+                        break;
+                    }
+                    case "editLH": {
+                        if (isset($_POST["editLH"])) {
+                            $id = $_POST["id"];
+                            $name = $_POST["tenLH"];
+
+                            loaiHang_editOne($id, $name);
+                        }
+
+                        echo("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
+                        break;
+                    }
+                    case "addLHForm": {
+                        include "loaiHang/add.php";
+                        break;
+                    }
+                    case "addLH": {
+                        if (isset($_POST["addLH"])) {
+                            $name = $_POST["tenLH"];
+
+                            loaiHang_addOne($name);
+                        }
+
+                        echo("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
+                        break;
+                    }
+                    case "deleteLH": {
+                        if (isset($_GET["id"])) {
+                            $id = $_GET["id"];
+
+                            loaiHang_deleteOne($id);
+                        }
+
+                        echo("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
+                        break;
+                    }
                 }
             ?>
             <!-- main-panel ends -->
