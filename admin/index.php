@@ -217,121 +217,181 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <?php
-                        $sidebarNav = [ 
-                            (object) [
-                                'tab' => 1,
-                                'displayName' => 'Loại Hàng',
-                                'href' => "index.php?tab=1&act=listLH",
-                                "icon" => "mdi mdi-cube menu-icon"
-                            ],
-                            (object) [
-                                'tab' => 2,
-                                'displayName' => 'Hàng Hóa',
-                                'href' => "index.php?tab=2&act=listHH",
-                                "icon" => "mdi mdi-printer-3d menu-icon"
-                            ],
-                            (object) [
-                                'tab' => 3,
-                                'displayName' => 'Tài Khoản',
-                                'href' => "index.php?tab=3&act=listTK",
-                                "icon" => "mdi mdi-account menu-icon"
-                            ],
-                        ];
+                    $sidebarNav = [
+                        (object) [
+                            'tab' => 1,
+                            'displayName' => 'Loại Hàng',
+                            'href' => "index.php?tab=1&act=listLH",
+                            "icon" => "mdi mdi-cube menu-icon"
+                        ],
+                        (object) [
+                            'tab' => 2,
+                            'displayName' => 'Sản Phẩm',
+                            'href' => "index.php?tab=2&act=listSP",
+                            "icon" => "mdi mdi-printer-3d menu-icon"
+                        ],
+                        (object) [
+                            'tab' => 3,
+                            'displayName' => 'Tài Khoản',
+                            'href' => "index.php?tab=3&act=listTK",
+                            "icon" => "mdi mdi-account menu-icon"
+                        ],
+                    ];
 
-                        $tab = 1;
+                    $tab = 1;
 
-                        if (isset($_GET['tab'])) {
-                            $tab = (int)$_GET['tab'];
+                    if (isset($_GET['tab'])) {
+                        $tab = (int) $_GET['tab'];
+                    }
+
+                    foreach ($sidebarNav as $menu) {
+                        $className = "nav-item";
+                        if ($tab == $menu->tab) {
+                            $className .= " active";
                         }
 
-                        foreach ($sidebarNav as $menu) {
-                            $className = "nav-item";
-                            if ($tab == $menu->tab) {
-                                $className .= " active";
-                            }
-                            
-                            echo '<li class="'.$className.'">
-                            <a class="nav-link" href="'.$menu->href.'">
-                                <span class="icon-bg"><i class="'.$menu->icon.'"></i></span>
-                                <span class="menu-title">'.$menu->displayName.'</span>
+                        echo '<li class="' . $className . '">
+                            <a class="nav-link" href="' . $menu->href . '">
+                                <span class="icon-bg"><i class="' . $menu->icon . '"></i></span>
+                                <span class="menu-title">' . $menu->displayName . '</span>
                             </a>
                             </li>';
-                        }
+                    }
                     ?>
                 </ul>
             </nav>
             <!-- partial -->
             <?php
-                include "../models/pdo.php";
-                include "../models/loaiHang.php";
+            include "../models/pdo.php";
+            include "../models/loaiHang.php";
+            include "../models/sanPham.php";
 
-                $act = "listLH";
+            $act = "listLH";
 
-                if (isset($_GET['act'])) {
-                    $act = $_GET['act'];
-                }
+            if (isset($_GET['act'])) {
+                $act = $_GET['act'];
+            }
 
-                switch ($tab) {
-                    case 1: {
+            switch ($tab) {
+                case 1: {
                         switch ($act) {
                             case "listLH": {
-                                include "loaiHang/list.php";
-                                break;
-                            }
+                                    include "loaiHang/list.php";
+                                    break;
+                                }
                             case "editLHForm": {
-                                include "loaiHang/edit.php";
-                                break;
-                            }
+                                    include "loaiHang/edit.php";
+                                    break;
+                                }
                             case "editLH": {
-                                if (isset($_POST["editLH"])) {
-                                    $id = $_POST["id"];
-                                    $name = $_POST["tenLH"];
-        
-                                    loaiHang_editOne($id, $name);
+                                    if (isset($_POST["editLH"])) {
+                                        $id = $_POST["id"];
+                                        $name = $_POST["tenLH"];
+
+                                        loaiHang_editOne($id, $name);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
+                                    break;
                                 }
-        
-                                echo("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
-                                break;
-                            }
                             case "addLHForm": {
-                                include "loaiHang/add.php";
-                                break;
-                            }
+                                    include "loaiHang/add.php";
+                                    break;
+                                }
                             case "addLH": {
-                                if (isset($_POST["addLH"])) {
-                                    $name = $_POST["tenLH"];
-        
-                                    loaiHang_addOne($name);
+                                    if (isset($_POST["addLH"])) {
+                                        $name = $_POST["tenLH"];
+
+                                        loaiHang_addOne($name);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
+                                    break;
                                 }
-        
-                                echo("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
-                                break;
-                            }
                             case "deleteLH": {
-                                if (isset($_GET["id"])) {
-                                    $id = $_GET["id"];
-        
-                                    loaiHang_deleteOne($id);
+                                    if (isset($_GET["id"])) {
+                                        $id = $_GET["id"];
+
+                                        loaiHang_deleteOne($id);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
+                                    break;
                                 }
-        
-                                echo("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
-                                break;
-                            }
                         }
 
                         break;
                     }
-                    case 2: {
+                case 2: {
                         switch ($act) {
-                            case "listHH": {
-                                include "hangHoa/list.php";
-                                break;
-                            }
+                            case "listSP": {
+                                    include "sanPham/list.php";
+                                    break;
+                                }
+                            case "addSPForm": {
+                                    include "sanPham/add.php";
+                                    break;
+                                }
+                            case "addSP": {
+                                    if (isset($_POST["addSP"])) {
+                                        $idLoaiHang = $_POST["idLoaiHang"];
+                                        $tenSP = $_POST["tenSP"];
+                                        $gia = $_POST["gia"];
+                                        $mota = $_POST["moTa"];
+                                        $filename = $_FILES["hinh"]["name"];
+
+                                        $target_dir = "../images/";
+                                        $target_file = $target_dir . $filename;
+                                        move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+
+                                        sanPham_addOne($idLoaiHang, $tenSP, $filename, $gia, $mota);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=2&act=listSP';</script>");
+                                    break;
+                                }
+                            case "deleteSP": {
+                                    if (isset($_GET["id"])) {
+                                        $id = $_GET["id"];
+
+                                        sanPham_deleteOne($id);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=2&act=listSP';</script>");
+                                    break;
+                                }
+                            case "editSPForm": {
+                                    include "sanPham/edit.php";
+                                    break;
+                                }
+                            case "editSP": {
+                                    if (isset($_POST["editSP"])) {
+                                        $id = $_POST["id"];
+                                        $tenSP = $_POST["tenSP"];
+                                        $idLoaiHang = $_POST["idLoaiHang"];
+                                        $hinh = $_POST["hinh"];
+                                        $gia = $_POST["gia"];
+                                        $moTa = $_POST["moTa"];
+
+                                        if (isset($hinh) && $hinh != "") {
+                                            $filename = $_FILES["hinh"]["name"];
+                                            $hinh = $filename;
+                                            $target_dir = "../images/";
+                                            $target_file = $target_dir . $filename;
+                                            move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+                                        }
+
+                                        sanPham_editOne($id, $tenSP, $idLoaiHang, $hinh, $gia, $moTa);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=2&act=listSP';</script>");
+                                    break;
+                                }
                         }
 
                         break;
                     }
-                }
+            }
             ?>
             <!-- main-panel ends -->
         </div>
@@ -352,6 +412,7 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/file-upload.js"></script>
     <!-- End custom js for this page -->
 </body>
 

@@ -13,7 +13,7 @@
                                 >
                             </div>
                             <input type="submit" class="btn btn-primary mr-2" name="addLH" value="Submit"></button>
-                            <a href="index.php?tab=1?act=listLH" class="btn btn-light">Cancel</a>
+                            <a href="index.php?tab=1&act=listLH" class="btn btn-light">Cancel</a>
                         </form>
                     </div>
                 </div>

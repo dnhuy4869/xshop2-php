@@ -51,16 +51,16 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th> ID </th>
-                                    <th> Tên loại </th>
-                                    <th style="width: 8.33%"> Thao tác </th>
+                                    <th>ID </th>
+                                    <th>Tên loại hàng</th>
+                                    <th style="width: 8.33%">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                     foreach ($listLH as $lh) {
                                         $editHref = "index.php?tab=1&act=editLHForm&id=".$lh["id"];
-                                        $deleteHref = "index.php?tab1&act=deleteLH&id=".$lh["id"];
+                                        $deleteHref = "index.php?tab=1&act=deleteLH&id=".$lh["id"];
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>
                                                 <td> '.$lh["tenLoaiHang"].' </td>
