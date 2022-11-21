@@ -53,6 +53,7 @@
                                 <tr>
                                     <th>ID </th>
                                     <th>Tên loại hàng</th>
+                                    <th>Hình</th>
                                     <th style="width: 8.33%">Thao tác</th>
                                 </tr>
                             </thead>
@@ -61,9 +62,12 @@
                                     foreach ($listLH as $lh) {
                                         $editHref = "index.php?tab=1&act=editLHForm&id=".$lh["id"];
                                         $deleteHref = "index.php?tab=1&act=deleteLH&id=".$lh["id"];
+                                        $img = "<img src='../images/".$lh["hinh"]."' />";
+
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>
                                                 <td> '.$lh["tenLoaiHang"].' </td>
+                                                <td> '.$img.' </td>
                                                 <td>
                                                     <a href='.$editHref.'><input type="button" class="btn btn-success" value="Sửa"></input></a>
                                                     <a href='.$deleteHref.'><input type="button" class="btn btn-danger" value="Xóa"></input></a>

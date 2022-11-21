@@ -287,8 +287,17 @@
                                     if (isset($_POST["editLH"])) {
                                         $id = $_POST["id"];
                                         $name = $_POST["tenLH"];
+                                        $hinh = $_FILES["hinh"];
 
-                                        loaiHang_editOne($id, $name);
+                                        if (isset($hinh)) {
+                                            $filename = $_FILES["hinh"]["name"];
+                                            $hinh = $filename;
+                                            $target_dir = "../images/";
+                                            $target_file = $target_dir . $filename;
+                                            move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+                                        }
+
+                                        loaiHang_editOne($id, $name, $hinh);
                                     }
 
                                     echo ("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
@@ -301,8 +310,13 @@
                             case "addLH": {
                                     if (isset($_POST["addLH"])) {
                                         $name = $_POST["tenLH"];
+                                        $filename = $_FILES["hinh"]["name"];
 
-                                        loaiHang_addOne($name);
+                                        $target_dir = "../images/";
+                                        $target_file = $target_dir . $filename;
+                                        move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+
+                                        loaiHang_addOne($name, $filename);
                                     }
 
                                     echo ("<script>location.href = 'index.php?tab=1&act=listLH';</script>");
@@ -369,11 +383,11 @@
                                         $id = $_POST["id"];
                                         $tenSP = $_POST["tenSP"];
                                         $idLoaiHang = $_POST["idLoaiHang"];
-                                        $hinh = $_POST["hinh"];
                                         $gia = $_POST["gia"];
                                         $moTa = $_POST["moTa"];
+                                        $hinh = $_FILES["hinh"];
 
-                                        if (isset($hinh) && $hinh != "") {
+                                        if (isset($hinh)) {
                                             $filename = $_FILES["hinh"]["name"];
                                             $hinh = $filename;
                                             $target_dir = "../images/";

@@ -13,15 +13,15 @@ function loaiHang_loadOne($id)
     return $lh;
 }
 
-function loaiHang_editOne($id, $name)
+function loaiHang_editOne($id, $name, $hinh)
 {
-    $sql = "update loaihang set tenLoaiHang='$name' where id=" . $id;
+    $sql = "update loaihang set tenLoaiHang='$name', hinh='$hinh' where id=" . $id;
     pdo_execute($sql);
 }
 
-function loaiHang_addOne($name)
+function loaiHang_addOne($name, $hinh)
 {
-    $sql = "insert into loaihang(tenLoaiHang) values ('$name')";
+    $sql = "insert into loaihang(tenLoaiHang, hinh) values ('$name', '$hinh')";
     pdo_execute($sql);
 }
 

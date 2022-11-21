@@ -44,7 +44,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Hình</label>
-                                <input type="file" name="hinh" class="file-upload-default" value="<?php echo $currentSP["hinh"];?>">
+                                <input type="file" name="hinh" class="file-upload-default">
                                 <div class="input-group col-xs-12">
                                     <input type="text" class="form-control file-upload-info" disabled
                                         placeholder="<?php if (isset($currentSP["hinh"]) && $currentSP["hinh"] != "") echo $currentSP["hinh"]; else echo "Upload image"; ?>">
