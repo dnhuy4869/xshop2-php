@@ -6,6 +6,13 @@ function loaiHang_loadAll()
     return $listLH;
 }
 
+function loaiHang_loadLimit($limit)
+{
+    $sql = "select * from loaihang order by id limit ".(string)$limit;
+    $listLH = pdo_query($sql);
+    return $listLH;
+}
+
 function loaiHang_loadOne($id)
 {
     $sql = "select * from loaihang where id=" . $id;
@@ -30,4 +37,11 @@ function loaiHang_deleteOne($id)
     $sql = "delete from loaihang where id=" . $id;
     pdo_execute($sql);
 }
+
+function loaiHang_count($id) {
+    $sql = "select count(*) as soLuong from sanpham where idLoaiHang='$id'";
+    $listLH = pdo_query_one($sql);
+    return $listLH["soLuong"];
+}
+
 ?>
