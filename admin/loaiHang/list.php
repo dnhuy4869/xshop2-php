@@ -33,7 +33,7 @@
 
                             <!-- Select dropdown -->
                             <div class="d-flex flex-row-reverse bd-highlight ">
-                                <form action="index.php?tab=1?act=listLH" method="post">
+                                <form action="index.php?tab=1&act=listLH" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select">
                                         <option disabled selected>Records Limit</option>
                                         <?php foreach([5,7,10,12] as $limit) : ?>

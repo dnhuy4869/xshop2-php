@@ -65,35 +65,6 @@
                                     src="assets/images/faces/face28.png" alt="">
                             </div>
                             <div class="p-2">
-                                <h5 class="dropdown-header text-uppercase pl-2 text-dark">User Options</h5>
-                                <a class="dropdown-item py-1 d-flex align-items-center justify-content-between"
-                                    href="#">
-                                    <span>Inbox</span>
-                                    <span class="p-0">
-                                        <span class="badge badge-primary">3</span>
-                                        <i class="mdi mdi-email-open-outline ml-1"></i>
-                                    </span>
-                                </a>
-                                <a class="dropdown-item py-1 d-flex align-items-center justify-content-between"
-                                    href="#">
-                                    <span>Profile</span>
-                                    <span class="p-0">
-                                        <span class="badge badge-success">1</span>
-                                        <i class="mdi mdi-account-outline ml-1"></i>
-                                    </span>
-                                </a>
-                                <a class="dropdown-item py-1 d-flex align-items-center justify-content-between"
-                                    href="javascript:void(0)">
-                                    <span>Settings</span>
-                                    <i class="mdi mdi-settings"></i>
-                                </a>
-                                <div role="separator" class="dropdown-divider"></div>
-                                <h5 class="dropdown-header text-uppercase  pl-2 text-dark mt-2">Actions</h5>
-                                <a class="dropdown-item py-1 d-flex align-items-center justify-content-between"
-                                    href="#">
-                                    <span>Lock Account</span>
-                                    <i class="mdi mdi-lock ml-1"></i>
-                                </a>
                                 <a class="dropdown-item py-1 d-flex align-items-center justify-content-between"
                                     href="#">
                                     <span>Log Out</span>
@@ -108,48 +79,7 @@
                             <i class="mdi mdi-email-outline"></i>
                             <span class="count-symbol bg-success"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-LH" ,
-                            aria-labelledby="messageDropdown">
-                            <h6 class="p-3 mb-0 bg-primary text-white py-4">Messages</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <img src="assets/images/faces/face4.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div
-                                    class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Mark send you a message
-                                    </h6>
-                                    <p class="text-gray mb-0"> 1 Minutes ago </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <img src="assets/images/faces/face2.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div
-                                    class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Cregh send you a
-                                        message</h6>
-                                    <p class="text-gray mb-0"> 15 Minutes ago </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <img src="assets/images/faces/face3.jpg" alt="image" class="profile-pic">
-                                </div>
-                                <div
-                                    class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Profile picture updated
-                                    </h6>
-                                    <p class="text-gray mb-0"> 18 Minutes ago </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="p-3 mb-0 text-center">4 new messages</h6>
-                        </div>
+                        
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
@@ -157,51 +87,7 @@
                             <i class="mdi mdi-bell-outline"></i>
                             <span class="count-symbol bg-danger"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-LH" ,
-                            aria-labelledby="notificationDropdown">
-                            <h6 class="p-3 mb-0 bg-primary text-white py-4">Notifications</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-success">
-                                        <i class="mdi mdi-calendar"></i>
-                                    </div>
-                                </div>
-                                <div
-                                    class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
-                                    <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today
-                                    </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-warning">
-                                        <i class="mdi mdi-settings"></i>
-                                    </div>
-                                </div>
-                                <div
-                                    class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
-                                    <p class="text-gray ellipsis mb-0"> Update dashboard </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-info">
-                                        <i class="mdi mdi-link-variant"></i>
-                                    </div>
-                                </div>
-                                <div
-                                    class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
-                                    <p class="text-gray ellipsis mb-0"> New admin wow! </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="p-3 mb-0 text-center">See all notifications</h6>
+                        
                         </div>
                     </li>
                 </ul>
@@ -232,8 +118,8 @@
                         ],
                         (object) [
                             'tab' => 3,
-                            'displayName' => 'Tài Khoản',
-                            'href' => "index.php?tab=3&act=listTK",
+                            'displayName' => 'Người dùng',
+                            'href' => "index.php?tab=3&act=listND",
                             "icon" => "mdi mdi-account menu-icon"
                         ],
                     ];
@@ -265,6 +151,7 @@
             include "../models/pdo.php";
             include "../models/loaiHang.php";
             include "../models/sanPham.php";
+            include "../models/nguoiDung.php";
 
             $act = "listLH";
 
@@ -399,6 +286,16 @@
                                     }
 
                                     echo ("<script>location.href = 'index.php?tab=2&act=listSP';</script>");
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
+                case 3: {
+                        switch ($act) {
+                            case "listND": {
+                                    include "nguoiDung/list.php";
                                     break;
                                 }
                         }
