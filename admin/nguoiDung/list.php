@@ -29,11 +29,11 @@
                         <h4 class="card-title">Danh sách người dùng</h4>
 
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <a href="index.php?tab=1&act=addLHForm"><button class="btn btn-success" style="min-width: 140px;">Thêm mới</button></a>
+                            <a href="index.php?tab=3&act=addNDForm"><button class="btn btn-success" style="min-width: 140px;">Thêm mới</button></a>
 
                             <!-- Select dropdown -->
                             <div class="d-flex flex-row-reverse bd-highlight ">
-                                <form action="index.php?tab=1&act=listLH" method="post">
+                                <form action="index.php?tab=3&act=listND" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select">
                                         <option disabled selected>Records Limit</option>
                                         <?php foreach([5,7,10,12] as $limit) : ?>
@@ -62,7 +62,7 @@
                                     foreach ($listND as $lh) {
                                         $editHref = "index.php?tab=3&act=editNDForm&id=".$lh["id"];
                                         $deleteHref = "index.php?tab=3&act=deleteND&id=".$lh["id"];
-                                        $img = "<img src='../images/".$lh["hinh"]."' />";
+                                        $img = "<img src='../images/nguoiDung/".$lh["hinh"]."' />";
 
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>

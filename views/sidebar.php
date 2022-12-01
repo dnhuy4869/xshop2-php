@@ -96,8 +96,8 @@
                             ?>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
-                        <a href="" class="nav-item nav-link">Đăng ký</a>
-                        <a href="" class="nav-item nav-link">Đăng nhập</a>
+                        <a href="login.php" class="nav-item nav-link">Đăng nhập</a>
+                        <a href="register.php" class="nav-item nav-link">Đăng ký</a>
                     </div>
                 </div>
             </nav>

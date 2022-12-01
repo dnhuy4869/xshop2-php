@@ -68,8 +68,8 @@ session_start();
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                            class="text-primary font-weight-bold border px-3 mr-1">C</span>Cake</h1>
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
@@ -110,7 +110,7 @@ session_start();
         $_SESSION['records-limit'] = $_POST['records-limit'];
     }
 
-    if (isset($_POST["filter"]) || isset($_SESSION["kw"])) {
+    if (isset($_POST["filter"]) || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
         if (isset($_POST["filter"])) {
             $_SESSION['kw'] = $_POST['kw'];
         }
@@ -128,8 +128,8 @@ session_start();
         $idLH = (int)$_GET["idLH"];
 
         if ($kw !== "") {
-            $listSP = pdo_query("SELECT * FROM sanpham where tenSanPham like %$kw% and idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where tenSanPham like %$kw% and idLoaiHang='$idLH'");
+            $listSP = pdo_query("SELECT * FROM sanpham where tenSanPham like '%$kw%' and idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
+            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where tenSanPham like '%$kw%' and idLoaiHang='$idLH'");
         } else {
             $listSP = pdo_query("SELECT * FROM sanpham where idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
             $sql = pdo_query("SELECT count(id) AS id FROM sanpham where idLoaiHang='$idLH'");
@@ -187,7 +187,7 @@ session_start();
                             <div class="d-flex align-items-center">
                                 <form action="shop.php?tab=2" id="filter-form" method="post">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="kw" placeholder="Tìm theo tên">
+                                        <input type="text" class="form-control" name="kw" placeholder="Tìm theo tên" <?php if (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "") echo 'value="'.$kw.'"'; ?>>
                                         <input type="hidden" name="filter">
                                         <div class="input-group-append"
                                             onclick="document.forms['filter-form'].submit();">

@@ -26,7 +26,7 @@
 
 <body>
     <div class="container-scroller">
-        <!-- partial:partials/_navbar.html -->
+
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo text-info" href="index.php">ADMIN</a>
@@ -79,7 +79,7 @@
                             <i class="mdi mdi-email-outline"></i>
                             <span class="count-symbol bg-success"></span>
                         </a>
-                        
+
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
@@ -87,8 +87,6 @@
                             <i class="mdi mdi-bell-outline"></i>
                             <span class="count-symbol bg-danger"></span>
                         </a>
-                        
-                        </div>
                     </li>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -296,6 +294,33 @@
                         switch ($act) {
                             case "listND": {
                                     include "nguoiDung/list.php";
+                                    break;
+                                }
+                            case "addNDForm": {
+                                    include "nguoiDung/add.php";
+                                    break;
+                                }
+                            case "addND": {
+                                    if (isset($_POST["addND"])) {
+                                        $tenTK = $_POST["tenTK"];
+                                        $matKhau = $_POST["matKhau"];
+                                        $email = $_POST["email"];
+                                        $soDT = $_POST["soDT"];
+                                        $vaiTro = $_POST["vaiTro"];
+                                        $filename = $_FILES["hinh"]["name"];
+
+                                        $target_dir = "../images/nguoiDung/";
+                                        $target_file = $target_dir . $filename;
+                                        move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+
+                                        nguoiDung_addOne($tenTK, $matKhau, $email, $soDT, $vaiTro, $filename);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=3&act=listND';</script>");
+                                    break;
+                                }
+                            case "editNDForm": {
+                                    include "nguoiDung/edit.php";
                                     break;
                                 }
                         }
