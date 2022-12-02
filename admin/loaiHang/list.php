@@ -62,7 +62,7 @@
                                     foreach ($listLH as $lh) {
                                         $editHref = "index.php?tab=1&act=editLHForm&id=".$lh["id"];
                                         $deleteHref = "index.php?tab=1&act=deleteLH&id=".$lh["id"];
-                                        $img = "<img src='../images/".$lh["hinh"]."' />";
+                                        $img = "<img src='../images/loaiHang/".$lh["hinh"]."' />";
 
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>

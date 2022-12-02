@@ -231,14 +231,14 @@ session_start();
                     <?php
                     //$listSP = sanPham_loadAll();
                     foreach ($listSP as $sp) {
-                        $img = "../images/" . $sp["hinh"];
+                        $img = "../images/sanPham/" . $sp["hinh"];
                         echo '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
                                 <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                     <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
                                 </a>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <h6 class="text-truncate mb-3">' . $sp["tenSanPham"] . '</h6>
+                                    <h6 class="text-truncate mb-3 px-1">' . $sp["tenSanPham"] . '</h6>
                                     <div class="d-flex justify-content-center">
                                         <h6>$' . $sp["gia"] . '</h6>
                                     </div>

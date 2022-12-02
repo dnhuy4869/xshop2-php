@@ -1,25 +1,33 @@
 <?php
-    $tab = 1;
-    if (isset($_GET["tab"])) {
-        $tab = (int)$_GET["tab"];
-    }
+if (isset($_GET["act"])) {
+    $act = $_GET["act"];
 
-    $isShow = "show";
-    if ($tab !== 1) {
-        $isShow = "position-absolute";
+    if ($act === "dangXuat") {
+        unset($_SESSION['user']);
     }
+}
 
-    $isMb = "mb-5";
-    if ($tab !== 1) {
-        $isMb = "";
-    }
+$tab = 1;
+if (isset($_GET["tab"])) {
+    $tab = (int) $_GET["tab"];
+}
 
-    $navStype = "";
-    if ($tab !== 1) {
-        $navStype = "width: calc(100% - 30px); z-index: 1;";
-    }
+$isShow = "show";
+if ($tab !== 1) {
+    $isShow = "position-absolute";
+}
 
-    $listLH = loaiHang_loadLimit(10);
+$isMb = "mb-5";
+if ($tab !== 1) {
+    $isMb = "";
+}
+
+$navStype = "";
+if ($tab !== 1) {
+    $navStype = "width: calc(100% - 30px); z-index: 1;";
+}
+
+$listLH = loaiHang_loadLimit(10);
 ?>
 
 <div class="container-fluid <?php echo $isMb; ?>">
@@ -34,10 +42,10 @@
                 id="navbar-vertical" style="<?php echo $navStype; ?>">
                 <div class="bg-white navbar-nav w-100 overflow-hidden">
                     <?php
-                        foreach ($listLH as $lh) {
-                            echo '<a href="shop.php?tab=2&idLH='.$lh["id"].'" class="nav-item nav-link">' . $lh["tenLoaiHang"] . '</a>';
-                        }
-                        ?>
+                    foreach ($listLH as $lh) {
+                        echo '<a href="shop.php?tab=2&idLH=' . $lh["id"] . '" class="nav-item nav-link">' . $lh["tenLoaiHang"] . '</a>';
+                    }
+                    ?>
                 </div>
             </nav>
         </div>
@@ -53,78 +61,90 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <?php
-                            $navItems = [
-                                (object) [
-                                    'tab' => 1,
-                                    'displayName' => 'Trang chủ',
-                                    'href' => "home.php?tab=1",
-                                ],
-                                (object) [
-                                    'tab' => 2,
-                                    'displayName' => 'Sản phẩm',
-                                    'href' => "shop.php?tab=2",
-                                ],
-                                (object) [
-                                    'tab' => 3,
-                                    'displayName' => 'Chi tiết',
-                                    'href' => "detail.php?tab=3",
-                                ],
-                                (object) [
-                                    'tab' => 4,
-                                    'displayName' => 'Giỏ hàng',
-                                    'href' => "cart.php?tab=4",
-                                ],
-                                (object) [
-                                    'tab' => 5,
-                                    'displayName' => 'Thanh toán',
-                                    'href' => "checkout.php?tab=5",
-                                ],
-                            ];
+                        $navItems = [
+                            (object) [
+                                'tab' => 1,
+                                'displayName' => 'Trang chủ',
+                                'href' => "home.php?tab=1",
+                            ],
+                            (object) [
+                                'tab' => 2,
+                                'displayName' => 'Sản phẩm',
+                                'href' => "shop.php?tab=2",
+                            ],
+                            (object) [
+                                'tab' => 3,
+                                'displayName' => 'Chi tiết',
+                                'href' => "detail.php?tab=3",
+                            ],
+                            (object) [
+                                'tab' => 4,
+                                'displayName' => 'Giỏ hàng',
+                                'href' => "cart.php?tab=4",
+                            ],
+                            (object) [
+                                'tab' => 5,
+                                'displayName' => 'Thanh toán',
+                                'href' => "checkout.php?tab=5",
+                            ],
+                        ];
 
-                            if (isset($_GET["tab"])) {
-                                $tab = (int)$_GET["tab"];
+                        if (isset($_GET["tab"])) {
+                            $tab = (int) $_GET["tab"];
+                        }
+
+                        foreach ($navItems as $nav) {
+                            $className = "nav-item nav-link";
+                            if ($tab == $nav->tab) {
+                                $className .= " active";
                             }
 
-                            foreach ($navItems as $nav) {
-                                $className = "nav-item nav-link";
-                                if ($tab == $nav->tab) {
-                                    $className .= " active";
-                                }
-
-                                echo ' <a href="' . $nav->href . '" class="' . $className . '">' . $nav->displayName . '</a>';
-                            }
-                            ?>
+                            echo ' <a href="' . $nav->href . '" class="' . $className . '">' . $nav->displayName . '</a>';
+                        }
+                        ?>
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
+                    <div class="navbar-nav ml-auto py-0 d-flex align-items-center">
+                        <?php
+                        if (isset($_SESSION["user"])) {
+                            echo '<a href="#" class="nav-item nav-link">' . $_SESSION["user"]["tenTaiKhoan"] . '</a>';
+                            echo '<span>|</span>';
+                            echo '<a href="home.php?act=dangXuat" class="nav-item nav-link">Đăng xuất</a>';
+                        } else {
+
+                        ?>
                         <a href="login.php" class="nav-item nav-link">Đăng nhập</a>
+                        <span>|</span>
                         <a href="register.php" class="nav-item nav-link">Đăng ký</a>
+                        <?php } ?>
                     </div>
                 </div>
             </nav>
             <?php
-                if ($tab == 1) {
-                ?>
+            if ($tab == 1) {
+            ?>
             <div id="header-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" style="height: 410px;">
-                        <img class="img-fluid" src="../img/carousel-1.jpg" alt="Image">
+                        <img class="img-fluid" src="../img/carousel-3.jpg" alt="">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
+                                <h4 class="text-light text-uppercase font-weight-medium mb-3">Giảm giá 10% đơn hàng đầu
+                                    tiên
                                 </h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Ngon, Bổ, Rẻ</h3>
+                                <a href="" class="btn btn-light py-2 px-3">Đặt hàng</a>
                             </div>
                         </div>
                     </div>
                     <div class="carousel-item" style="height: 410px;">
-                        <img class="img-fluid" src="../img/carousel-2.jpg" alt="Image">
+                        <img class="img-fluid" src="../img/carousel-4.jpg" alt="">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
+                                <h4 class="text-light text-uppercase font-weight-medium mb-3">Giảm giá 10% đơn hàng đầu
+                                    tiên
                                 </h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Giá Cả Hợp Lý</h3>
+                                <a href="" class="btn btn-light py-2 px-3">Đặt hàng</a>
                             </div>
                         </div>
                     </div>
@@ -141,8 +161,8 @@
                 </a>
             </div>
             <?php
-                }
-                ?>
+            }
+            ?>
         </div>
     </div>
 </div>

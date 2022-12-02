@@ -63,7 +63,7 @@
                                     foreach ($listSP as $lh) {
                                         $editHref = "index.php?tab=2&act=editSPForm&id=".$lh["id"];
                                         $deleteHref = "index.php?tab=2&act=deleteSP&id=".$lh["id"];
-                                        $img = "<img src='../images/".$lh["hinh"]."' />";
+                                        $img = "<img src='../images/sanPham/".$lh["hinh"]."' />";
 
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>

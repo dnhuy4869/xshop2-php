@@ -116,7 +116,7 @@
                         ],
                         (object) [
                             'tab' => 3,
-                            'displayName' => 'Người dùng',
+                            'displayName' => 'Người Dùng',
                             'href' => "index.php?tab=3&act=listND",
                             "icon" => "mdi mdi-account menu-icon"
                         ],
@@ -177,7 +177,7 @@
                                         if (isset($hinh)) {
                                             $filename = $_FILES["hinh"]["name"];
                                             $hinh = $filename;
-                                            $target_dir = "../images/";
+                                            $target_dir = "../images/loaiHang/";
                                             $target_file = $target_dir . $filename;
                                             move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
                                         }
@@ -197,7 +197,7 @@
                                         $name = $_POST["tenLH"];
                                         $filename = $_FILES["hinh"]["name"];
 
-                                        $target_dir = "../images/";
+                                        $target_dir = "../images/loaiHang/";
                                         $target_file = $target_dir . $filename;
                                         move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
 
@@ -239,7 +239,7 @@
                                         $mota = $_POST["moTa"];
                                         $filename = $_FILES["hinh"]["name"];
 
-                                        $target_dir = "../images/";
+                                        $target_dir = "../images/sanPham/";
                                         $target_file = $target_dir . $filename;
                                         move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
 
@@ -275,7 +275,7 @@
                                         if (isset($hinh)) {
                                             $filename = $_FILES["hinh"]["name"];
                                             $hinh = $filename;
-                                            $target_dir = "../images/";
+                                            $target_dir = "../images/sanPham/";
                                             $target_file = $target_dir . $filename;
                                             move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
                                         }

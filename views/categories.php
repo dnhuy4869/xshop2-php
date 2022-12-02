@@ -6,7 +6,7 @@
 
             foreach ($listLH as $lh) {
                 $count = loaiHang_count($lh["id"]);
-                $imgPath = "../images/".$lh["hinh"];
+                $imgPath = "../images/loaiHang/".$lh["hinh"];
 
                 echo '<div class="col-lg-4 col-md-6 pb-1">
                     <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">

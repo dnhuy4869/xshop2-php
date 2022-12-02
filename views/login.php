@@ -1,3 +1,22 @@
+<?php
+include "../models/pdo.php";
+
+session_start();
+
+if (isset($_POST["login"])) {
+    $tenTK = $_POST["tenTK"];
+    $matKhau = $_POST["matKhau"];
+    $result = pdo_query_one("select * from nguoidung where tenTaiKhoan='$tenTK' and matKhau='$matKhau' limit 1");
+    if (!$result) {
+        $thongBao = "Đăng nhập thất bại.";
+    } else {
+        $_SESSION["user"] = $result;
+
+        echo ("<script>location.href = 'home.php';</script>");
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -24,18 +43,24 @@
                             <span class="fa fa-user-o"></span>
                         </div>
                         <h3 class="text-center mb-4">Đăng nhập</h3>
-                        <form action="#" class="login-form">
+                        <form action="login.php" class="login-form" method="post">
                             <div class="form-group">
-                                <input type="text" class="form-control rounded-left" placeholder="Username" required>
+                                <input type="text" class="form-control rounded-left" name="tenTK"
+                                    placeholder="Tên đăng nhập" required>
                             </div>
                             <div class="form-group d-flex">
-                                <input type="password" class="form-control rounded-left" placeholder="Password"
-                                    required>
+                                <input type="password" class="form-control rounded-left" name="matKhau"
+                                    placeholder="Mật khẩu" required>
                             </div>
                             <div class="form-group">
-                                <button type="submit"
-                                    class="form-control btn btn-primary rounded submit px-3">Login</button>
+                                <input type="submit" name="login"
+                                    class="form-control btn btn-primary rounded submit px-3" value="Login"></input>
                             </div>
+                            <?php
+                            if (isset($thongBao)) {
+                                echo '<p class="text-danger">' . $thongBao . '</p>';
+                            }
+                            ?>
                         </form>
                     </div>
                 </div>

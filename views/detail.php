@@ -135,12 +135,12 @@ include "../models/sanPham.php";
             <?php
             $currSP = sanPham_loadOne($_GET["idSP"]);
 
-            $imgPath = "../images/" . $currSP["hinh"];
+            $imgPath = "../images/sanPham/" . $currSP["hinh"];
             ?>
 
             <div class="container-fluid py-5">
                 <div class="row px-xl-5">
-                    <div class="col-lg-6 pb-5" style="height: 700px;">
+                    <div class="col-lg-6 pb-5" style="height: 600px;">
                         <img class="img-fluid w-100 h-100" src="<?php echo $imgPath; ?>" alt="Image">
                     </div>
 
