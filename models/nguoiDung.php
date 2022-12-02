@@ -19,4 +19,16 @@ function nguoiDung_loadOne($id)
     return $nd;
 }
 
+function nguoiDung_editOne($id, $tenTK, $matKhau, $email, $soDT, $hinh, $vaiTro)
+{
+    $sql = "update nguoidung set tenTaiKhoan='$tenTK', matKhau='$matKhau', email='$email', soDienThoai='$soDT', hinh='$hinh', vaiTro='$vaiTro' where id=" . $id;
+    pdo_execute($sql);
+}
+
+function nguoiDung_deleteOne($id)
+{
+    $sql = "delete from nguoidung where id=" . $id;
+    pdo_execute($sql);
+}
+
 ?>

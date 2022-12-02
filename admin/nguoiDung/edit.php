@@ -23,31 +23,41 @@
                             </div>
                             <div class="form-group">
                                 <label>Tên tài khoản</label>
-                                <input type="text" class="form-control" name="tenTK" placeholder="Tên tài khoản" value="<?php echo $currentSP["tenTaiKhoan"];?>">
+                                <input type="text" class="form-control" name="tenTK" placeholder="Tên tài khoản" value="<?php echo $currND["tenTaiKhoan"];?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu</label>
+                                <input type="text" class="form-control" name="matKhau" placeholder="Mật khẩu" value="<?php echo $currND["matKhau"];?>">
                             </div>
                             <div class="form-group">
                                 <label>Hình</label>
                                 <input type="file" name="hinh" class="file-upload-default">
                                 <div class="input-group col-xs-12">
                                     <input type="text" class="form-control file-upload-info" disabled
-                                        placeholder="<?php if (isset($currentSP["hinh"]) && $currentSP["hinh"] != "") echo $currentSP["hinh"]; else echo "Upload image"; ?>">
+                                        placeholder="<?php if (isset($currND["hinh"]) && $currND["hinh"] != "") echo $currND["hinh"]; else echo "Upload image"; ?>">
                                     <span class="input-group-append">
                                         <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Giá</label>
-                                <input type="text" class="form-control" name="gia" placeholder="Giá" value="<?php echo $currentSP["gia"];?>">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo $currND["email"];?>">
                             </div>
                             <div class="form-group">
-                                <label>Mô tả</label>
-                                <textarea cols="30" rows="5" type="text" class="form-control" name="moTa"
-                                    placeholder="Mô tả"><?php echo $currentSP["moTa"];?></textarea>
+                                <label>Số điện thoại</label>
+                                <input type="text" class="form-control" name="soDT" placeholder="Số điện thoại" value="<?php echo $currND["soDienThoai"];?>">
                             </div>
-                            <input type="hidden" name="id" value="<?=$currentSP["id"]?>">
-                            <input type="submit" class="btn btn-primary mr-2" name="editSP" value="Submit"></button>
-                            <a href="index.php?tab=2&act=listSP" class="btn btn-light">Cancel</a>
+                            <div class="form-group">
+                                <label for="">Vai trò</label>
+                                <select class="form-control" name="vaiTro">
+                                    <option class="form-control" value="0">Khách</option>
+                                    <option class="form-control" value="1" <?php if ($currND["vaiTro"] == true) echo "selected"; ?>>Quản trị viên</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="id" value="<?=$currND["id"]?>">
+                            <input type="submit" class="btn btn-primary mr-2" name="editND" value="Submit"></button>
+                            <a href="index.php?tab=3&act=listND" class="btn btn-light">Cancel</a>
                         </form>
                     </div>
                 </div>

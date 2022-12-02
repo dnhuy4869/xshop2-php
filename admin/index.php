@@ -323,6 +323,40 @@
                                     include "nguoiDung/edit.php";
                                     break;
                                 }
+                            case "editND": {
+                                    if (isset($_POST["editND"])) {
+                                        $id = $_POST["id"];
+                                        $tenTK = $_POST["tenTK"];
+                                        $matKhau = $_POST["matKhau"];
+                                        $email = $_POST["email"];
+                                        $soDT = $_POST["soDT"];
+                                        $hinh = $_FILES["hinh"];
+                                        $vaiTro = $_POST["vaiTro"];
+
+                                        if (isset($hinh)) {
+                                            $filename = $_FILES["hinh"]["name"];
+                                            $hinh = $filename;
+                                            $target_dir = "../images/nguoiDung/";
+                                            $target_file = $target_dir . $filename;
+                                            move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+                                        }
+
+                                        nguoiDung_editOne($id, $tenTK, $matKhau, $email, $soDT, $hinh, $vaiTro);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=3&act=listND';</script>");
+                                    break;
+                                }
+                            case "deleteND": {
+                                    if (isset($_GET["id"])) {
+                                        $id = $_GET["id"];
+
+                                        nguoiDung_deleteOne($id);
+                                    }
+
+                                    echo ("<script>location.href = 'index.php?tab=3&act=listND';</script>");
+                                    break;
+                                }
                         }
 
                         break;
