@@ -244,7 +244,7 @@ session_start();
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Tổng số sản phẩm</h6>
+                            <h6 class="font-weight-medium">Tổng số </h6>
                             <h6 class="font-weight-medium"><?=$tongSP?></h6>
                         </div>
                     </div>
