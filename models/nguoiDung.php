@@ -12,6 +12,18 @@ function nguoiDung_addOne($tenTaiKhoan, $matKhau, $email, $soDienThoai, $vaiTro,
     pdo_execute($sql);
 }
 
+function nguoiDung_isExist($tenTK)
+{
+    $result = pdo_query_one("select * from nguoidung where tenTaiKhoan='$tenTK'");
+
+    if ($result) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 function nguoiDung_loadOne($id)
 {
     $sql = "select * from nguoidung where id=" . $id;

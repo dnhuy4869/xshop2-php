@@ -73,7 +73,7 @@ include "../models/sanPham.php";
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
                             class="text-primary font-weight-bold border px-3 mr-1">C</span>Cake</h1>
                 </a>
             </div>
@@ -133,7 +133,8 @@ include "../models/sanPham.php";
             <!-- Shop Sidebar End -->
 
             <?php
-            $currSP = sanPham_loadOne($_GET["idSP"]);
+            $idSP = $_GET["idSP"];
+            $currSP = sanPham_loadOne($idSP);
 
             $imgPath = "../images/sanPham/" . $currSP["hinh"];
             ?>
@@ -175,23 +176,21 @@ include "../models/sanPham.php";
                         }
                         echo '<p class="mb-4">' . $string . '</p>';
                         ?>
-                        <div class="d-flex align-items-center mb-4 pt-2">
+                        <form class="d-flex align-items-center mb-4 pt-2" action="cart.php?tab=4&act=themSP"
+                            method="post">
                             <div class="input-group quantity mr-3" style="width: 130px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary btn-minus">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control bg-secondary text-center" value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
+                                <input type="number" name="soLuong" min="1" class="form-control bg-secondary text-center"
+                                    value="1">
                             </div>
-                            <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                                Cart</button>
-                        </div>
+
+                            <input type="hidden" name="id" value="<?=$idSP?>">
+                            <input type="hidden" name="tenSP" value="<?=$currSP["tenSanPham"]?>">
+                            <input type="hidden" name="hinh" value="<?=$currSP["hinh"]?>">
+                            <input type="hidden" name="gia" value="<?=$currSP["gia"]?>">
+                            <button type="submit" name="themSP" class="btn btn-primary px-3"><i
+                                    class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng </button>
+
+                        </form>
                         <div class="d-flex pt-2">
                             <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                             <div class="d-inline-flex">
