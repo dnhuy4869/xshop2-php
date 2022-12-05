@@ -30,6 +30,22 @@ session_start();
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+
+    <style>
+        .btn-addtocart {
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .btn-addtocart:hover {
+            background: none;
+            border: none;
+            outline: none;
+            color: #D19C97;
+        }
+
+        </style>
 </head>
 
 <body>
@@ -244,8 +260,15 @@ session_start();
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                    <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                                    <form action="cart.php?tab=4&act=themSP" class="btn btn-sm text-dark p-0" method="post">
+                                    <input type="hidden" name="id" value="'.$sp["id"].'">
+                                    <input type="hidden" name="tenSP" value="'.$sp["tenSanPham"].'">
+                                    <input type="hidden" name="hinh" value="'.$sp["hinh"].'">
+                                    <input type="hidden" name="gia" value="'.$sp["gia"].'">
+                                    <input type="hidden" name="soLuong" value="1">
+                                    <button type="submit" name="themSP" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>';

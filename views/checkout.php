@@ -2,7 +2,8 @@
 
 session_start();
 
-if (!isset($_POST["thanhToan"])) {
+if (!isset($_POST["datHang"])
+    && !isset($_POST["thanhToan"])) {
     header("location: cart.php?tab=4");
 }
 
@@ -132,7 +133,7 @@ if (!isset($_POST["thanhToan"])) {
 
    <!-- Checkout Start -->
    <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
+        <form class="row px-xl-5" action="checkout.php?tab=5&act=thanhToan" method="post">
             <div class="col-lg-7">
                 <div class="mb-4">
                     <h4 class="font-weight-semi-bold mb-4">Thông tin đặt hàng</h4>
@@ -205,11 +206,11 @@ if (!isset($_POST["thanhToan"])) {
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
-                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
+                        <button type="submit" name="thanhToan" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <!-- Checkout End -->
 

@@ -176,8 +176,7 @@ include "../models/sanPham.php";
                         }
                         echo '<p class="mb-4">' . $string . '</p>';
                         ?>
-                        <form class="d-flex align-items-center mb-4 pt-2" action="cart.php?tab=4&act=themSP"
-                            method="post">
+                        <form class="d-flex align-items-center mb-4 pt-2" action="cart.php?tab=4&act=themSP" method="post">
                             <div class="input-group quantity mr-3" style="width: 130px;">
                                 <input type="number" name="soLuong" min="1" class="form-control bg-secondary text-center"
                                     value="1">

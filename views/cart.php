@@ -210,7 +210,10 @@ session_start();
                             $imgPath = "../images/sanPham/" . $cart["hinh"];
 
                             echo '<tr>
-                            <td class="align-middle"><img src="'.$imgPath.'" alt="" style="width: 50px; margin-right: 4px;">'.$cart["tenSP"].'</td>
+                            <td class="d-flex items-center">
+                                <img src="'.$imgPath.'" alt="" style="width: 60px; margin-right: 12px;">
+                                <p style="margin-bottom: 0;" class="text-left d-flex align-items-center">'.$cart["tenSP"].'</p>
+                            </td>
                             <td class="align-middle">$'.$cart["gia"].'</td>
                             <td class="align-middle">'.$cart["soLuong"].'</td>
                             <td class="align-middle">$'.$cart["tongTien"].'</td>
@@ -252,7 +255,7 @@ session_start();
                         </div>
                         <input type="hidden" name="tongSP" value="<?=$tongSP?>">
                         <input type="hidden" name="tongTien" value="<?=$tongTien?>">
-                        <button type="submit" name="thanhToan" class="btn btn-block btn-primary my-3 py-3">Thanh toán</button>
+                        <button type="submit" name="datHang" class="btn btn-block btn-primary my-3 py-3">Đặt hàng</button>
                     </div>
                 </form>
             </div>
