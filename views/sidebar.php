@@ -13,7 +13,7 @@ if (isset($_GET["tab"])) {
     $tab = (int) $_GET["tab"];
 }
 else {
-    if (__FILE__ != "home.php") {
+    if (__FILE__ != "index.php") {
         $tab = 0;
     }
 }
@@ -34,6 +34,7 @@ if ($tab !== 1) {
 }
 
 $listLH = loaiHang_loadLimit(10);
+
 ?>
 
 <div class="container-fluid <?php echo $isMb; ?>">
@@ -78,20 +79,15 @@ $listLH = loaiHang_loadLimit(10);
                                 'displayName' => 'Sản phẩm',
                                 'href' => "shop.php?tab=2",
                             ],
-                            // (object) [
-                            //     'tab' => 3,
-                            //     'displayName' => 'Chi tiết',
-                            //     'href' => "detail.php?tab=3",
-                            // ],
                             (object) [
-                                'tab' => 4,
+                                'tab' => 3,
                                 'displayName' => 'Giỏ hàng',
-                                'href' => "cart.php?tab=4",
+                                'href' => "cart.php?tab=3",
                             ],
                             (object) [
-                                'tab' => 5,
+                                'tab' => 4,
                                 'displayName' => 'Hóa đơn',
-                                'href' => "bill.php?tab=5",
+                                'href' => "bill.php?tab=4",
                             ],
                         ];
 

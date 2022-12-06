@@ -4,6 +4,10 @@ if (!isset($_GET["idSP"])) {
     header("location: shop.php?tab=2");
 }
 
+if (!isset($_SESSION["vuaMoiXem"])) {
+    $_SESSION["vuaMoiXem"] = [];
+}
+
 include "../models/pdo.php";
 include "../models/sanPham.php";
 
@@ -35,6 +39,21 @@ include "../models/sanPham.php";
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+
+    <style>
+        .btn-addtocart {
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .btn-addtocart:hover {
+            background: none;
+            border: none;
+            outline: none;
+            color: #D19C97;
+        }
+    </style>
 </head>
 
 <body>
@@ -138,7 +157,7 @@ include "../models/sanPham.php";
             <!-- Shop Sidebar End -->
 
             <?php
-           
+
             $currSP = sanPham_loadOne($idSP);
 
             $imgPath = "../images/sanPham/" . $currSP["hinh"];
@@ -174,16 +193,17 @@ include "../models/sanPham.php";
                         }
                         echo '<p class="mb-4">' . $string . '</p>';
                         ?>
-                        <form class="d-flex align-items-center mb-4 pt-2" action="cart.php?tab=4&act=themSP" method="post">
+                        <form class="d-flex align-items-center mb-4 pt-2" action="cart.php?tab=4&act=themSP"
+                            method="post">
                             <div class="input-group quantity mr-3" style="width: 130px;">
-                                <input type="number" name="soLuong" min="1" class="form-control bg-secondary text-center"
-                                    value="1">
+                                <input type="number" name="soLuong" min="1"
+                                    class="form-control bg-secondary text-center" value="1">
                             </div>
 
-                            <input type="hidden" name="id" value="<?=$idSP?>">
-                            <input type="hidden" name="tenSP" value="<?=$currSP["tenSanPham"]?>">
-                            <input type="hidden" name="hinh" value="<?=$currSP["hinh"]?>">
-                            <input type="hidden" name="gia" value="<?=$currSP["gia"]?>">
+                            <input type="hidden" name="id" value="<?= $idSP ?>">
+                            <input type="hidden" name="tenSP" value="<?= $currSP["tenSanPham"] ?>">
+                            <input type="hidden" name="hinh" value="<?= $currSP["hinh"] ?>">
+                            <input type="hidden" name="gia" value="<?= $currSP["gia"] ?>">
                             <button type="submit" name="themSP" class="btn btn-primary px-3"><i
                                     class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng </button>
 
@@ -287,6 +307,48 @@ include "../models/sanPham.php";
         </div>
     </div>
     <!-- Shop End -->
+
+    <!-- Products Start -->
+    <div class="container-fluid py-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">Có Thể Bạn Cũng Thích</span></h2>
+        </div>
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="owl-carousel related-carousel">
+                    <?php
+                $listSP = sanPham_loadLienQuan($currSP["idLoaiHang"], 5);
+                foreach ($listSP as $sp) {
+                    $img = "../images/sanPham/" . $sp["hinh"];
+                    echo '<div class="card product-item border-0">
+                    <a href="detail.php?idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
+                    </a>
+                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                        <h6 class="text-truncate mb-3">' . $sp["tenSanPham"] . '</h6>
+                        <div class="d-flex justify-content-center">
+                            <h6>$' . $sp["gia"] . '</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between bg-light border">
+                                    <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                                    <form action="cart.php?tab=4&act=themSP" class="btn btn-sm text-dark p-0" method="post">
+                                    <input type="hidden" name="id" value="' . $sp["id"] . '">
+                                    <input type="hidden" name="tenSP" value="' . $sp["tenSanPham"] . '">
+                                    <input type="hidden" name="hinh" value="' . $sp["hinh"] . '">
+                                    <input type="hidden" name="gia" value="' . $sp["gia"] . '">
+                                    <input type="hidden" name="soLuong" value="1">
+                                    <button type="submit" name="themSP" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
+                                    </form>
+                                </div>
+                </div>';
+                }
+                ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Products End -->
 
 
     <!-- Footer Start -->

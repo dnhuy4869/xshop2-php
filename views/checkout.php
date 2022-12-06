@@ -2,7 +2,8 @@
 
 session_start();
 
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user"])
+|| empty($_SESSION["gioHang"])) {
     header("location: cart.php?tab=4");
 }
 
@@ -11,9 +12,11 @@ if (!isset($_SESSION["user"])) {
 <?php
     include "../models/pdo.php";
     include "../models/loaiHang.php";
-    include "sidebar.php";
     include "../models/sanPham.php";
     include "../models/hoaDon.php";
+
+    include "topbar.php";
+    include "sidebar.php";
 
     if (isset($_GET["act"])) {
         $act = $_GET["act"];
@@ -33,6 +36,8 @@ if (!isset($_SESSION["user"])) {
                         foreach ($_SESSION["gioHang"] as $cart) {
                             hoaDonCT_addOne($cart["id"], $idHD, $cart["soLuong"], $cart["tenSP"], $cart["hinh"], $cart["gia"]);
                         }
+
+                        unset($_SESSION['gioHang']);
                         
                         header("location: billct.php?idHD=$idHD");
                     }

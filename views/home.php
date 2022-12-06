@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION["vuaMoiXem"])) {
+    $_SESSION["vuaMoiXem"] = [];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -47,80 +52,14 @@ session_start();
 </head>
 
 <body>
-    <!-- Topbar Start -->
-    <div class="container-fluid">
-        <div class="row bg-secondary py-2 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="">FAQs</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Help</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Support</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a class="text-dark pl-2" href="">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center py-3 px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">C</span>Cake</h1>
-                </a>
-            </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-                <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-
-    <!-- Navbar Start -->
     <?php
     include "../models/pdo.php";
     include "../models/loaiHang.php";
     include "../models/sanPham.php";
+
+    include "topbar.php";
     include "sidebar.php";
     ?>
-    <!-- Navbar End -->
 
     <!-- Featured Start -->
     <div class="container-fluid pt-5">
@@ -201,7 +140,7 @@ session_start();
             $img = "../images/sanPham/" . $sp["hinh"];
             echo ' <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
-                    <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <a href="detail.php?idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                         <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
                     </a>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
@@ -234,16 +173,14 @@ session_start();
             <div class="row justify-content-md-center py-5 px-xl-5">
                 <div class="col-md-6 col-12 py-5">
                     <div class="text-center mb-2 pb-2">
-                        <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Stay Updated</span></h2>
-                        <p>Amet lorem at rebum amet dolores. Elitr lorem dolor sed amet diam labore at justo ipsum
-                            eirmod
-                            duo labore labore.</p>
+                        <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Cập Nhật Tin Tức</span></h2>
+                        <p>Cập nhật tin tức về sản phẩm mới của chúng tôi qua email.</p>
                     </div>
                     <form action="">
                         <div class="input-group">
-                            <input type="text" class="form-control border-white p-4" placeholder="Email Goes Here">
+                            <input type="text" class="form-control border-white p-4" placeholder="Email của bạn">
                             <div class="input-group-append">
-                                <button class="btn btn-primary px-4">Subscribe</button>
+                                <button class="btn btn-primary px-4">Đăng Ký</button>
                             </div>
                         </div>
                     </form>
@@ -256,9 +193,10 @@ session_start();
         <!-- Products Start -->
         <div class="container-fluid pt-5">
             <div class="text-center mb-4">
-                <h2 class="section-title px-5"><span class="px-2">Just Arrived</span></h2>
+                <h2 class="section-title px-5"><span class="px-2">Vừa Mới Xem</span></h2>
             </div>
             <div class="row px-xl-5 pb-3">
+
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
                         <div

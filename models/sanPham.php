@@ -6,8 +6,14 @@ function sanPham_loadAll() {
     return $listSP;
 }
 
-function sanPham_loadThinhHanh() {
-    $sql = "select * from sanpham order by luotXem desc limit 8";
+function sanPham_loadThinhHanh($limit = 8) {
+    $sql = "select * from sanpham order by luotXem desc limit $limit";
+    $listSP = pdo_query($sql);
+    return $listSP;
+}
+
+function sanPham_loadLienQuan($idLH, $limit = 5) {
+    $sql = "select * from sanpham where idLoaiHang=$idLH order by luotXem desc limit $limit";
     $listSP = pdo_query($sql);
     return $listSP;
 }
