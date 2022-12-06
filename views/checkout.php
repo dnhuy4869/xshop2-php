@@ -2,10 +2,45 @@
 
 session_start();
 
-if (!isset($_POST["datHang"])
-    && !isset($_POST["thanhToan"])) {
+if (!isset($_SESSION["user"])) {
     header("location: cart.php?tab=4");
 }
+
+?>
+
+<?php
+    include "../models/pdo.php";
+    include "../models/loaiHang.php";
+    include "sidebar.php";
+    include "../models/sanPham.php";
+    include "../models/hoaDon.php";
+
+    if (isset($_GET["act"])) {
+        $act = $_GET["act"];
+
+        switch ($act) {
+            case "thanhToan": {
+                    if (isset($_POST["thanhToan"])) {
+                        $hoTen = $_POST["hoTen"];
+                        $email = $_POST["email"];
+                        $soDT = $_POST["soDT"];
+                        $diaChi = $_POST["diaChi"];
+                        $pttt = $_POST["pttt"];
+                        $idND = $_SESSION["user"]["id"];
+
+                        $idHD = hoaDon_addOne($hoTen, $email, $soDT, $diaChi, $idND, $pttt);
+
+                        foreach ($_SESSION["gioHang"] as $cart) {
+                            hoaDonCT_addOne($cart["id"], $idHD, $cart["soLuong"], $cart["tenSP"], $cart["hinh"], $cart["gia"]);
+                        }
+                        
+                        header("location: billct.php?idHD=$idHD");
+                    }
+
+                    break;
+                }
+        }
+    }
 
 ?>
 
@@ -105,24 +140,16 @@ if (!isset($_POST["datHang"])
 
 
     <!-- Navbar Start -->
-    <?php
-    include "../models/pdo.php";
-    include "../models/loaiHang.php";
-    include "sidebar.php";
-    include "../models/sanPham.php";
-
-
-
-    ?>
+    
     <!-- Navbar End -->
 
 
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Cake Shop</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0"><a href="">Trang chủ</a></p>
                 <p class="m-0 px-2">-</p>
                 <p class="m-0">Thanh toán</p>
             </div>
@@ -131,32 +158,31 @@ if (!isset($_POST["datHang"])
     <!-- Page Header End -->
 
 
-   <!-- Checkout Start -->
-   <div class="container-fluid pt-5">
+    <!-- Checkout Start -->
+    <div class="container-fluid pt-5">
         <form class="row px-xl-5" action="checkout.php?tab=5&act=thanhToan" method="post">
-            <div class="col-lg-7">
+            <div class="col-lg-6">
                 <div class="mb-4">
                     <h4 class="font-weight-semi-bold mb-4">Thông tin đặt hàng</h4>
                     <div class="form-group">
-                            <label>Họ và tên</label>
-                            <input class="form-control" type="text" placeholder="Họ và tên">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control" type="text" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <label>Số điện thoại</label>
-                            <input class="form-control" type="text" placeholder="Số điện thoại">
-                        </div>
-                        <div class="form-group">
-                            <label>Địa chỉ</label>
-                            <input class="form-control" type="text" placeholder="Địa chỉ">
-                        </div>
+                        <label>Họ và tên</label>
+                        <input class="form-control" type="text" name="hoTen" placeholder="Họ và tên">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" type="text" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input class="form-control" type="text" name="soDT" placeholder="Số điện thoại">
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input class="form-control" type="text" name="diaChi" placeholder="Địa chỉ">
+                    </div>
                 </div>
-                
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Thông tin hóa đơn</h4>
@@ -167,23 +193,26 @@ if (!isset($_POST["datHang"])
                         $tongSP = $_POST["tongSP"];
                         $tongTien = $_POST["tongTien"];
 
-                            foreach ($_SESSION["gioHang"] as $cart) {
+                        foreach ($_SESSION["gioHang"] as $cart) {
                             echo '<div class="d-flex justify-content-between">
-                                <p>'.$cart["tenSP"].'</p>
-                                <p>$'.$cart["gia"].'0</p>
+                                <p>' . $cart["tenSP"] . '</p>
+                                <p>$' . $cart["tongTien"] . '</p>
                             </div>';
-                            }                        
+                        }
                         ?>
                         <hr class="mt-0">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng số sản phẩm</h6>
-                            <h6 class="font-weight-medium"><?=$tongSP?></h6>
+                            <h6 class="font-weight-medium">
+                                <?= $tongSP ?>
+                            </h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Tổng tiền</h5>
-                            <h5 class="font-weight-bold">$<?=$tongTien?></h5>
+                            <h5 class="font-weight-bold">$<?= $tongTien ?>
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -206,7 +235,8 @@ if (!isset($_POST["datHang"])
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
-                        <button type="submit" name="thanhToan" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
+                        <button type="submit" name="thanhToan"
+                            class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
                     </div>
                 </div>
             </div>

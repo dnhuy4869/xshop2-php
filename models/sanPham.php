@@ -6,6 +6,12 @@ function sanPham_loadAll() {
     return $listSP;
 }
 
+function sanPham_loadThinhHanh() {
+    $sql = "select * from sanpham order by luotXem desc limit 8";
+    $listSP = pdo_query($sql);
+    return $listSP;
+}
+
 function sanPham_addOne($idLoaiHang, $tenSP, $hinh, $gia, $mota)
 {
     $sql = "insert into sanpham(idLoaiHang, tenSanPham, hinh, gia, mota) values ('$idLoaiHang', '$tenSP', '$hinh', '$gia', '$mota')";
@@ -15,6 +21,12 @@ function sanPham_addOne($idLoaiHang, $tenSP, $hinh, $gia, $mota)
 function sanPham_deleteOne($id)
 {
     $sql = "delete from sanpham where id=" . $id;
+    pdo_execute($sql);
+}
+
+function sanPham_tangLuotXem($id)
+{
+    $sql = "UPDATE sanpham SET luotXem = luotXem + 1 WHERE id=" . $id;
     pdo_execute($sql);
 }
 

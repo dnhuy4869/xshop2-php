@@ -8,8 +8,14 @@ if (isset($_GET["act"])) {
 }
 
 $tab = 1;
+
 if (isset($_GET["tab"])) {
     $tab = (int) $_GET["tab"];
+}
+else {
+    if (__FILE__ != "home.php") {
+        $tab = 0;
+    }
 }
 
 $isShow = "show";
@@ -72,11 +78,11 @@ $listLH = loaiHang_loadLimit(10);
                                 'displayName' => 'Sản phẩm',
                                 'href' => "shop.php?tab=2",
                             ],
-                            (object) [
-                                'tab' => 3,
-                                'displayName' => 'Chi tiết',
-                                'href' => "detail.php?tab=3",
-                            ],
+                            // (object) [
+                            //     'tab' => 3,
+                            //     'displayName' => 'Chi tiết',
+                            //     'href' => "detail.php?tab=3",
+                            // ],
                             (object) [
                                 'tab' => 4,
                                 'displayName' => 'Giỏ hàng',
@@ -84,8 +90,8 @@ $listLH = loaiHang_loadLimit(10);
                             ],
                             (object) [
                                 'tab' => 5,
-                                'displayName' => 'Thanh toán',
-                                'href' => "checkout.php?tab=5",
+                                'displayName' => 'Hóa đơn',
+                                'href' => "bill.php?tab=5",
                             ],
                         ];
 

@@ -58,7 +58,9 @@ if (isset($_POST["login"])) {
                             </div>
                             <?php
                             if (isset($thongBao)) {
-                                echo '<p class="text-danger">' . $thongBao . '</p>';
+                                echo '<div class="alert alert-danger" role="alert">
+                                '.$thongBao.'
+                              </div>';
                             }
                             ?>
                         </form>

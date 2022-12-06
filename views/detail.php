@@ -106,6 +106,11 @@ include "../models/sanPham.php";
     <?php
     include "../models/loaiHang.php";
     include "sidebar.php";
+
+    $idSP = $_GET["idSP"];
+
+    sanPham_tangLuotXem($idSP);
+
     ?>
     <!-- Navbar Start -->
     <!-- Navbar End -->
@@ -114,9 +119,9 @@ include "../models/sanPham.php";
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Cake Shop</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0"><a href="">Trang chủ</a></p>
                 <p class="m-0 px-2">-</p>
                 <p class="m-0">Chi tiết sản phẩm</p>
             </div>
@@ -133,7 +138,7 @@ include "../models/sanPham.php";
             <!-- Shop Sidebar End -->
 
             <?php
-            $idSP = $_GET["idSP"];
+           
             $currSP = sanPham_loadOne($idSP);
 
             $imgPath = "../images/sanPham/" . $currSP["hinh"];
@@ -150,14 +155,7 @@ include "../models/sanPham.php";
                             <?php echo $currSP["tenSanPham"]; ?>
                         </h3>
                         <div class="d-flex mb-3">
-                            <div class="text-primary mr-2">
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star"></small>
-                            </div>
-                            <small class="pt-1">(50 Reviews)</small>
+                            <small class="pt-1">(50 Đánh giá)</small>
                         </div>
                         <h3 class="font-weight-semi-bold mb-4">$
                             <?php echo $currSP["gia"]; ?>

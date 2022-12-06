@@ -109,71 +109,8 @@ if (!isset($_SESSION["user"])) {
     include "../models/loaiHang.php";
     include "sidebar.php";
     include "../models/sanPham.php";
+    include "../models/hoaDon.php";
 
-    if (!isset($_SESSION["gioHang"])) {
-        $_SESSION["gioHang"] = [];
-    }
-
-    if (isset($_GET["act"])) {
-        $act = $_GET["act"];
-
-        switch($act) {
-            case "themSP"; {
-                if (isset($_POST["themSP"])) {
-                    $id = $_POST["id"];
-                    $tenSP = $_POST["tenSP"];
-                    $hinh = $_POST["hinh"];
-                    $gia = (int)$_POST["gia"];
-                    $soLuong = (int)$_POST["soLuong"];
-                    $tongTien = $soLuong * $gia;
-
-                    $newSP = [ 
-                        "id" => $id, 
-                        "tenSP" => $tenSP,
-                        "hinh" => $hinh,
-                        "gia" => $gia, 
-                        "soLuong" => $soLuong,
-                        "tongTien" => $tongTien 
-                    ];
-
-                    $isExist = false;
-                        $i = 0;
-
-                    foreach ($_SESSION["gioHang"] as $cart) {
-                        if ($cart["id"] == $id) {
-                            $isExist = true;
-                                break;
-                        }
-
-                        $i++;
-                    }
-
-                    if (!$isExist) {
-                        array_push($_SESSION["gioHang"], $newSP); 
-                    }
-                    else {
-                        $cart = $_SESSION["gioHang"][$i];
-                        $currSL = (int)$cart["soLuong"];
-                                $currSL += $soLuong;
-                                $_SESSION["gioHang"][$i]["soLuong"] = $currSL;
-
-                                $gia = (int)$cart["gia"];
-                                $tongTien = $currSL * $gia;
-                                $_SESSION["gioHang"][$i]["tongTien"] = $tongTien;
-                    }
-                }
-
-                break;
-            }
-            case "xoaSP": {
-                if (isset($_GET["offset"])) {
-                    array_splice($_SESSION["gioHang"], $_GET["offset"], 1);
-                }
-
-                break;
-            }
-        }
-    }
 
     ?>
     <!-- Navbar End -->
@@ -186,7 +123,7 @@ if (!isset($_SESSION["user"])) {
             <div class="d-inline-flex">
                 <p class="m-0"><a href="">Trang chủ</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Giỏ hàng</p>
+                <p class="m-0">Chi tiết hóa đơn</p>
             </div>
         </div>
     </div>
@@ -196,79 +133,87 @@ if (!isset($_SESSION["user"])) {
     <!-- Cart Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
-            <div class="col-lg-8 table-responsive mb-5">
-                <table class="table table-bordered text-center mb-0">
-                    <thead class="bg-secondary text-dark">
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th>Giá</th>
-                            <th>Số lượng</th>
-                            <th>Tổng tiền</th>
-                            <th>Xóa</th>
-                        </tr>
-                    </thead>
-                    <tbody class="align-middle">
-                        <?php
-                        $i = 0;
-                        foreach ($_SESSION["gioHang"] as $cart) {
-                            $imgPath = "../images/sanPham/" . $cart["hinh"];
+            <?php 
+                $idHD = $_GET["idHD"];
+                $currHD = hoaDon_loadOne($idHD);
 
-                            echo '<tr>
-                            <td class="d-flex items-center">
-                                <img src="'.$imgPath.'" alt="" style="width: 60px; margin-right: 12px;">
-                                <p style="margin-bottom: 0;" class="text-left d-flex align-items-center">'.$cart["tenSP"].'</p>
-                            </td>
-                            <td class="align-middle">$'.$cart["gia"].'</td>
-                            <td class="align-middle">'.$cart["soLuong"].'</td>
-                            <td class="align-middle">$'.$cart["tongTien"].'</td>
-                            <td class="align-middle"><a href="cart.php?tab=4&act=xoaSP&offset='.$i.'" class="btn btn-sm btn-primary"><i
-                                        class="fa fa-times"></i></a></td>
-                        </tr>';
-
-                            $i++;
-                        }
-                                              
-                        ?>
-                    </tbody>
-                </table>
+            ?>
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <h4 class="font-weight-semi-bold mb-4">Thông tin đặt hàng</h4>
+                    <div class="form-group">
+                        <b>Họ và tên</b>
+                        <p><?=$currHD["hoTen"]?></p>
+                    </div>
+                    <div class="form-group">
+                        <b>Email</b>
+                        <p><?=$currHD["email"]?></p>
+                    </div>
+                    <div class="form-group">
+                        <b>Số điện thoại</b>
+                        <p><?=$currHD["soDT"]?></p>
+                    </div>
+                    <div class="form-group">
+                        <b>Địa chỉ</b>
+                        <p><?=$currHD["diaChi"]?></p>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <?php
-                $tongSP = 0;
-                $tongTien = 0;
-                foreach ($_SESSION["gioHang"] as $cart) {
-                    $tongSP += $cart["soLuong"];
-                    $tongTien += $cart["tongTien"];
-                }
-
-                ?>
-                <form class="card border-secondary mb-3" action="checkout.php" method="post">
+            <div class="col-lg-6">
+                <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Thông tin giỏ hàng</h4>
+                        <h4 class="font-weight-semi-bold m-0">Thông tin hóa đơn</h4>
                     </div>
                     <div class="card-body">
+                        <h5 class="font-weight-medium mb-3">Sản phẩm</h5>
+                        <?php
+                        $listCT = hoadDonCT_loadById($idHD);
+                        $tongSP = 0;
+                        $tongTien = 0;
+
+                        foreach ($listCT as $ct) {
+                            $tongSP += (int) $ct["soLuong"];
+                            $tongTienSP = (int)$ct["gia"] * (int)$ct["soLuong"];
+                            $tongTien += $tongTienSP;
+
+                            echo '<div class="d-flex justify-content-between">
+                                        <p>' . $ct["tenSanPham"] . '</p>
+                                        <p>$' . $tongTienSP . '</p>
+                                    </div>';
+                        }
+                        ?>
+                        <hr class="mt-0">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng số sản phẩm</h6>
-                            <h6 class="font-weight-medium"><?=$tongSP?></h6>
+                            <h6 class="font-weight-medium">
+                                <?= $tongSP ?>
+                            </h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Tổng tiền</h5>
-                            <h5 class="font-weight-bold">$<?=$tongTien?></h5>
+                            <h5 class="font-weight-bold">$<?= $tongTien ?>
+                            </h5>
                         </div>
-                        <input type="hidden" name="tongSP" value="<?=$tongSP?>">
-                        <input type="hidden" name="tongTien" value="<?=$tongTien?>">
-                        <button type="submit" name="datHang" class="btn btn-block btn-primary my-3 py-3">Đặt hàng</button>
                     </div>
-                </form>
-                <?php 
-                    if (isset($thongBao)) {
-                    echo '<div class="alert alert-danger" role="alert">
-                        '.$thongBao.'
-                      </div>';
-                    }
-                ?>
+                </div>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Phương thức thanh toán</h4>
+                    </div>
+                    <div class="card-body">
+                        
+                        <?php 
+                            if ((int)$currHD["pttt"] == 0) {
+                            echo '<label class="" for="paypal">Chuyển khoản ngân hàng</label>';
+                            }
+                            else {
+                                echo '<label class="" for="paypal">Thanh toán khi nhận hàng</label>';
+                            }
+                       ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

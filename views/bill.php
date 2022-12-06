@@ -2,6 +2,10 @@
 
 session_start();
 
+if (!isset($_SESSION["user"])) {
+    header("location: login.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +13,7 @@ session_start();
 
 <head>
     <meta charset="utf-8">
-    <title>Sản phẩm</title>
+    <title>Hóa đơn</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -121,44 +125,19 @@ session_start();
     include "../models/loaiHang.php";
     include "sidebar.php";
     include "../models/sanPham.php";
+    include "../models/hoaDon.php";
 
     if (isset($_POST['records-limit'])) {
         $_SESSION['records-limit'] = $_POST['records-limit'];
-    }
-
-    if (isset($_POST["filter"]) || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
-        if (isset($_POST["filter"])) {
-            $_SESSION['kw'] = $_POST['kw'];
-        }
-       
-        $kw = $_SESSION["kw"];
-    } else {
-        $kw = "";
     }
 
     $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 8;
     $page = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
     $paginationStart = ($page - 1) * $limit;
 
-    if (isset($_GET["idLH"])) {
-        $idLH = (int)$_GET["idLH"];
-
-        if ($kw !== "") {
-            $listSP = pdo_query("SELECT * FROM sanpham where tenSanPham like '%$kw%' and idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where tenSanPham like '%$kw%' and idLoaiHang='$idLH'");
-        } else {
-            $listSP = pdo_query("SELECT * FROM sanpham where idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where idLoaiHang='$idLH'");
-        }
-    } else {
-        if ($kw !== "") {
-            $listSP = pdo_query("SELECT * FROM sanpham where tenSanPham like '%$kw%' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where tenSanPham like '%$kw%'");
-        } else {
-            $listSP = pdo_query("SELECT * FROM sanpham LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham");
-        }
-    }
+    $idND = $_SESSION["user"]["id"];
+    $listSP = pdo_query("SELECT * FROM hoadon where idNguoiDung='$idND' LIMIT $paginationStart, $limit");
+    $sql = pdo_query("SELECT count(id) AS id FROM hoadon where idNguoiDung='$idND'");
 
     $allRecrods = $sql[0]['id'];
 
@@ -180,7 +159,7 @@ session_start();
             <div class="d-inline-flex">
                 <p class="m-0"><a href="">Trang chủ</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Sản phẩm</p>
+                <p class="m-0">Hóa đơn</p>
             </div>
         </div>
     </div>
@@ -201,29 +180,7 @@ session_start();
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="d-flex align-items-center">
-                                <form action="shop.php?tab=2" id="filter-form" method="post">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="kw" placeholder="Tìm theo tên" <?php if (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "") echo 'value="'.$kw.'"'; ?>>
-                                        <input type="hidden" name="filter">
-                                        <div class="input-group-append"
-                                            onclick="document.forms['filter-form'].submit();">
-                                            <span class="input-group-text bg-transparent text-primary">
-                                                <i class="fa fa-search"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="dropdown ml-4">
-                                    <button class="btn border dropdown-toggle" type="button" id="triggerId"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Sắp xếp
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                        <a class="dropdown-item" href="#">Mới nhất</a>
-                                        <a class="dropdown-item" href="#">Phổ biến</a>
-                                        <a class="dropdown-item" href="#">Nhiều đánh giá</a>
-                                    </div>
-                                </div>
+                            
                             </div>
 
                             <div class="d-flex flex-row-reverse bd-highlight ">
@@ -244,74 +201,42 @@ session_start();
                             </div>
                         </div>
                     </div>
+
                     <?php
-                    //$listSP = sanPham_loadAll();
                     foreach ($listSP as $sp) {
-                        $img = "../images/sanPham/" . $sp["hinh"];
                         echo '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 pb-1">
-                            <div class="card product-item border-0 mb-4">
-                                <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
-                                </a>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <h6 class="text-truncate mb-3 px-1">' . $sp["tenSanPham"] . '</h6>
-                                    <div class="d-flex justify-content-center">
-                                        <h6>$' . $sp["gia"] . '</h6>
-                                    </div>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
-                                    <form action="cart.php?tab=4&act=themSP" class="btn btn-sm text-dark p-0" method="post">
-                                    <input type="hidden" name="id" value="'.$sp["id"].'">
-                                    <input type="hidden" name="tenSP" value="'.$sp["tenSanPham"].'">
-                                    <input type="hidden" name="hinh" value="'.$sp["hinh"].'">
-                                    <input type="hidden" name="gia" value="'.$sp["gia"].'">
-                                    <input type="hidden" name="soLuong" value="1">
-                                    <button type="submit" name="themSP" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
-                                    </form>
-                                </div>
+                        <div class="card product-item border-1 mb-4">
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3 px-1">Mã hóa đơn: '.$sp["id"].'</h6>
                             </div>
+                            <div class="card-footer d-flex justify-content-center bg-light border">
+                                <a href="billct.php?idHD='.$sp["id"].'" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                            </div>
+                        </div>
                         </div>';
-                    }
+
+                    }                    
                     ?>
+
+                    
+                    
                     <div class="col-12 pb-1">
                         <nav class="">
                             <ul class="pagination justify-content-center">
-                                <?php
-                                $href = "?tab=2&page=";
-                                if (isset($_GET["idLH"])) {
-                                    $href = "?tab=2&idLH=" . $_GET["idLH"] . "&page=";
-                                }
-                                ?>
-                                <li class="page-item text-center <?php if ($page <= 1) {
-                                    echo 'disabled';
-                                } ?>">
-                                    <a class="page-link" href="<?php if ($page <= 1) {
-                                            echo '#';
-                                        } else {
-                                            echo $href . $prev;
-                                        } ?>">
-                                        <<</a>
+                            <li class="page-item text-center <?php if($page <= 1){ echo 'disabled'; } ?>">
+                                    <a class="page-link"
+                                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>"><<</a>
                                 </li>
 
-                                <?php for ($i = 1; $i <= $totoalPages; $i++): ?>
-                                <li class="page-item <?php if ($page == $i) {
-                                        echo 'active';
-                                    } ?>">
-                                    <a class="page-link" href="<?php echo "shop.php" . $href . $i; ?>">
-                                        <?= $i; ?>
-                                    </a>
+                                <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+                                <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
+                                    <a class="page-link" href="?page=<?= $i; ?>"> <?= $i; ?> </a>
                                 </li>
                                 <?php endfor; ?>
 
-                                <li class="page-item text-center <?php if ($page >= $totoalPages) {
-                                        echo 'disabled';
-                                    } ?>">
-                                    <a class="page-link" href="<?php if ($page >= $totoalPages) {
-                                            echo '#';
-                                        } else {
-                                            echo $href . $next;
-                                        } ?>">>></a>
+                                <li class="page-item text-center <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                                    <a class="page-link"
+                                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">>></a>
                                 </li>
                             </ul>
                         </nav>

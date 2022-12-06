@@ -74,7 +74,9 @@ if (isset($_POST["register"])) {
                                     $class = "text-success";
                                 }
 
-                                echo '<p class="'.$class.'">' . $thongBao . '</p>';
+                                echo '<div class="'.$class.'" role="alert">
+                                '.$thongBao.'
+                              </div>';
                             }
                             ?>
                         </form>

@@ -10,7 +10,7 @@
 
                 echo '<div class="col-lg-4 col-md-6 pb-1">
                     <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                        <p class="text-right">'.$count.' Products</p>
+                        <p class="text-right">'.$count.' Sản phẩm</p>
                         <a href="shop.php?tab=2&idLH='.$lh["id"].'" class="cat-img position-relative overflow-hidden mb-3">
                             <img class="img-fluid w-100" style="height: 340px;" src="'.$imgPath.'" alt="">
                         </a>
