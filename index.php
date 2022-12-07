@@ -1,5 +1,7 @@
 <?php
 
+header('Cache-Control: no cache'); //no cache
+session_cache_limiter('private_no_expire'); // works
 session_start();
 
 ?>
@@ -154,7 +156,9 @@ session_start();
                             $sp["tongSoBL"] = binhLuan_tongSoBL($sp["id"]);
                         }
 
-                        var_dump($listSP);
+                        //var_dump($listSP);
+
+                        usort($listSP, function ($a, $b) { return $b['tongSoBL'] <=> $a['tongSoBL']; });
                     }
                 }
 
@@ -177,7 +181,7 @@ session_start();
                 $spThinhHanh = sanPham_loadLienQuan($currSP["idLoaiHang"], 5);
 
                 $tongSoBL = binhLuan_tongSoBL($idSP);
-                $listBL = binhLuan_loadLimit(); 
+                $listBL = binhLuan_loadLimit($idSP);
 
                 include "views/detail.php";
 

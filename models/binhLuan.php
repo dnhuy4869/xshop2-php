@@ -12,9 +12,9 @@ function binhLuan_tongSoBL($idSanPham) {
     return $listLH["soLuong"];
 }
 
-function binhLuan_loadLimit($limit = 5)
+function binhLuan_loadLimit($idSP, $limit = 5)
 {
-    $sql = "select * from binhluan order by id desc limit ".(string)$limit;
+    $sql = "select * from binhluan where idSanPham='$idSP' order by id desc limit ".(string)$limit;
     $listLH = pdo_query($sql);
     return $listLH;
 }
