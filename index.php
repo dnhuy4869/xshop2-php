@@ -71,11 +71,10 @@ session_start();
     $dsLH = loaiHang_loadLimit(10);
     include "views/sidebar.php";
 
-    if (!isset($_GET["act"]) || $_GET["act"] === "") {
-        include "views/home.php";
+    $act = "trangChu";
+    if (isset($_GET["act"])) {
+        $act = $_GET["act"];
     }
-
-    $act = $_GET["act"];
 
     switch ($act) {
         case "trangChu": {
