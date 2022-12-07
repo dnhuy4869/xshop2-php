@@ -172,7 +172,7 @@
                 foreach ($spThinhHanh as $sp) {
                     $img = "images/sanPham/" . $sp["hinh"];
                     echo '<div class="card product-item border-0">
-                <a href="detail.php?idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                <a href="index.php?act=chiTietSP&idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                     <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
                 </a>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
@@ -182,14 +182,14 @@
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
-                                <form action="cart.php?tab=4&act=themSP" class="btn btn-sm text-dark p-0" method="post">
+                                <a href="index.php?act=chiTietSP&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                                <form action="index.php?act=themGioHang" class="btn btn-sm text-dark p-0" method="post">
                                 <input type="hidden" name="id" value="' . $sp["id"] . '">
                                 <input type="hidden" name="tenSP" value="' . $sp["tenSanPham"] . '">
                                 <input type="hidden" name="hinh" value="' . $sp["hinh"] . '">
                                 <input type="hidden" name="gia" value="' . $sp["gia"] . '">
                                 <input type="hidden" name="soLuong" value="1">
-                                <button type="submit" name="themSP" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
+                                <button type="submit" name="themGioHang" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
                                 </form>
                             </div>
             </div>';
