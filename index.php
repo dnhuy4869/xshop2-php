@@ -105,9 +105,15 @@ session_start();
                     $kw = null;
                 }
 
+                if (isset($_POST['sort-by'])) {
+                    $_SESSION['sort-by'] = $_POST['sort-by'];
+                }
+
                 $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 8;
                 $page = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
                 $paginationStart = ($page - 1) * $limit;
+
+                $sortBy = isset($_SESSION['sort-by']) ? $_SESSION['sort-by'] : null;
 
                 $sql1 = "SELECT * FROM sanpham";
                 $sql1 .= " where 1=1";
@@ -118,6 +124,12 @@ session_start();
 
                 if (isset($kw)) {
                     $sql1 .= " and tenSanPham like '%$kw%'";
+                }
+
+                if (isset($sortBy)) {
+                    if ($sortBy == 0) {
+                        $sql1 .= " order by id desc";
+                    }
                 }
 
                 $sql1 .= " LIMIT $paginationStart, $limit";
@@ -135,6 +147,16 @@ session_start();
 
                 $listSP = pdo_query($sql1);
                 $sql = pdo_query($sql2);
+
+                if (isset($sortBy)) {
+                    if ($sortBy == 1) {
+                        foreach ($listSP as &$sp) {
+                            $sp["tongSoBL"] = binhLuan_tongSoBL($sp["id"]);
+                        }
+
+                        var_dump($listSP);
+                    }
+                }
 
                 $allRecrods = $sql[0]['id'];
                 $totoalPages = ceil($allRecrods / $limit);
@@ -245,7 +267,7 @@ session_start();
             }
         case "hoaDon": {
                 if (!isset($_SESSION["user"])) {
-                    header("location: login.php");
+                    echo ("<script>location.href = 'login.php';</script>");
                 }
 
                 if (isset($_POST['records-limit'])) {

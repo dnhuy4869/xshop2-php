@@ -32,7 +32,7 @@
                             <div class="d-flex flex-row-reverse bd-highlight ">
                                 <form action="index.php?act=hoaDon" id="form-records-limit" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select" onchange="document.forms['form-records-limit'].submit();">
-                                        <option disabled selected>Records Limit</option>
+                                        <option disabled selected>Giới hạn số lượng</option>
                                         <?php foreach ([8, 12, 16, 20] as $limit): ?>
                                         <option <?php if (
                                                 isset($_SESSION['records-limit']) &&
