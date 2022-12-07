@@ -1,39 +1,24 @@
 <?php
-if (isset($_GET["act"])) {
+$act = "trangChu";
+
+if (isset($_GET["act"]) && $_GET["act"] !== "") {
     $act = $_GET["act"];
-
-    if ($act === "dangXuat") {
-        unset($_SESSION['user']);
-    }
-}
-
-$tab = 1;
-
-if (isset($_GET["tab"])) {
-    $tab = (int) $_GET["tab"];
-}
-else {
-    if (__FILE__ != "index.php") {
-        $tab = 0;
-    }
 }
 
 $isShow = "show";
-if ($tab !== 1) {
+if ($act !== "trangChu") {
     $isShow = "position-absolute";
 }
 
 $isMb = "mb-5";
-if ($tab !== 1) {
+if ($act !== "trangChu") {
     $isMb = "";
 }
 
 $navStype = "";
-if ($tab !== 1) {
+if ($act !== "trangChu") {
     $navStype = "width: calc(100% - 30px); z-index: 1;";
 }
-
-$listLH = loaiHang_loadLimit(10);
 
 ?>
 
@@ -49,7 +34,7 @@ $listLH = loaiHang_loadLimit(10);
                 id="navbar-vertical" style="<?php echo $navStype; ?>">
                 <div class="bg-white navbar-nav w-100 overflow-hidden">
                     <?php
-                    foreach ($listLH as $lh) {
+                    foreach ($dsLH as $lh) {
                         echo '<a href="shop.php?tab=2&idLH=' . $lh["id"] . '" class="nav-item nav-link">' . $lh["tenLoaiHang"] . '</a>';
                     }
                     ?>
@@ -70,34 +55,30 @@ $listLH = loaiHang_loadLimit(10);
                         <?php
                         $navItems = [
                             (object) [
-                                'tab' => 1,
+                                'act' => "trangChu",
                                 'displayName' => 'Trang chủ',
-                                'href' => "home.php?tab=1",
+                                'href' => "index.php?act=trangChu",
                             ],
                             (object) [
-                                'tab' => 2,
+                                'act' => "sanPham",
                                 'displayName' => 'Sản phẩm',
-                                'href' => "shop.php?tab=2",
+                                'href' => "index.php?act=sanPham",
                             ],
                             (object) [
-                                'tab' => 3,
+                                'act' => "gioHang",
                                 'displayName' => 'Giỏ hàng',
-                                'href' => "cart.php?tab=3",
+                                'href' => "index.php?act=gioHang",
                             ],
                             (object) [
-                                'tab' => 4,
+                                'act' => "hoaDon",
                                 'displayName' => 'Hóa đơn',
-                                'href' => "bill.php?tab=4",
+                                'href' => "index.php?act=hoaDon",
                             ],
                         ];
 
-                        if (isset($_GET["tab"])) {
-                            $tab = (int) $_GET["tab"];
-                        }
-
                         foreach ($navItems as $nav) {
                             $className = "nav-item nav-link";
-                            if ($tab == $nav->tab) {
+                            if ($act == $nav->act) {
                                 $className .= " active";
                             }
 
@@ -110,24 +91,24 @@ $listLH = loaiHang_loadLimit(10);
                         if (isset($_SESSION["user"])) {
                             echo '<a href="#" class="nav-item nav-link">' . $_SESSION["user"]["tenTaiKhoan"] . '</a>';
                             echo '<span>|</span>';
-                            echo '<a href="home.php?act=dangXuat" class="nav-item nav-link">Đăng xuất</a>';
+                            echo '<a href="index.php?act=dangXuat" class="nav-item nav-link">Đăng xuất</a>';
                         } else {
 
                         ?>
-                        <a href="login.php" class="nav-item nav-link">Đăng nhập</a>
+                        <a href="views/login.php" class="nav-item nav-link">Đăng nhập</a>
                         <span>|</span>
-                        <a href="register.php" class="nav-item nav-link">Đăng ký</a>
+                        <a href="views/register.php" class="nav-item nav-link">Đăng ký</a>
                         <?php } ?>
                     </div>
                 </div>
             </nav>
             <?php
-            if ($tab == 1) {
+            if ($act == "trangChu") {
             ?>
             <div id="header-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" style="height: 410px;">
-                        <img class="img-fluid" src="../img/carousel-3.jpg" alt="">
+                        <img class="img-fluid" src="img/carousel-3.jpg" alt="">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
                                 <h4 class="text-light text-uppercase font-weight-medium mb-3">Giảm giá 10% đơn hàng đầu
@@ -139,7 +120,7 @@ $listLH = loaiHang_loadLimit(10);
                         </div>
                     </div>
                     <div class="carousel-item" style="height: 410px;">
-                        <img class="img-fluid" src="../img/carousel-4.jpg" alt="">
+                        <img class="img-fluid" src="img/carousel-4.jpg" alt="">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
                                 <h4 class="text-light text-uppercase font-weight-medium mb-3">Giảm giá 10% đơn hàng đầu

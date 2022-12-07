@@ -1,116 +1,5 @@
-<?php
-
-session_start();
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Sản phẩm</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="admin/assets/images/favicon.png" rel="shortcut icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../css/style.css" rel="stylesheet">
-
-    <style>
-        .btn-addtocart {
-            background: none;
-            border: none;
-            outline: none;
-        }
-
-        .btn-addtocart:hover {
-            background: none;
-            border: none;
-            outline: none;
-            color: #D19C97;
-        }
-
-        </style>
-</head>
-
-<body>
-    <!-- Navbar Start -->
-    <?php
-    include "../models/pdo.php";
-    include "../models/loaiHang.php";
-    include "../models/sanPham.php";
-
-    include "topbar.php";
-    include "sidebar.php";
-
-    if (isset($_POST['records-limit'])) {
-        $_SESSION['records-limit'] = $_POST['records-limit'];
-    }
-
-    if (isset($_POST["filter"]) || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
-        if (isset($_POST["filter"])) {
-            $_SESSION['kw'] = $_POST['kw'];
-        }
-       
-        $kw = $_SESSION["kw"];
-    } else {
-        $kw = "";
-    }
-
-    $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 8;
-    $page = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
-    $paginationStart = ($page - 1) * $limit;
-
-    if (isset($_GET["idLH"])) {
-        $idLH = (int)$_GET["idLH"];
-
-        if ($kw !== "") {
-            $listSP = pdo_query("SELECT * FROM sanpham where tenSanPham like '%$kw%' and idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where tenSanPham like '%$kw%' and idLoaiHang='$idLH'");
-        } else {
-            $listSP = pdo_query("SELECT * FROM sanpham where idLoaiHang='$idLH' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where idLoaiHang='$idLH'");
-        }
-    } else {
-        if ($kw !== "") {
-            $listSP = pdo_query("SELECT * FROM sanpham where tenSanPham like '%$kw%' LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham where tenSanPham like '%$kw%'");
-        } else {
-            $listSP = pdo_query("SELECT * FROM sanpham LIMIT $paginationStart, $limit");
-            $sql = pdo_query("SELECT count(id) AS id FROM sanpham");
-        }
-    }
-
-    $allRecrods = $sql[0]['id'];
-
-    // Calculate total pages
-    $totoalPages = ceil($allRecrods / $limit);
-
-    // Prev + Next
-    $prev = $page - 1;
-    $next = $page + 1;
-
-    ?>
-    <!-- Navbar End -->
-
-
-    <!-- Page Header Start -->
-    <div class="container-fluid bg-secondary mb-5">
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Cake Shop</h1>
             <div class="d-inline-flex">
@@ -137,7 +26,13 @@ session_start();
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="d-flex align-items-center">
-                                <form action="shop.php?tab=2" id="filter-form" method="post">
+                            <?php
+                                $href = "index.php?act=sanPham";
+                                    if (isset($idLH)) {
+                                        $href .= ("&idLH=".$idLH);
+                                    }
+                                ?>
+                                <form action="<?=$href?>" id="filter-form" method="post">
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="kw" placeholder="Tìm theo tên" <?php if (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "") echo 'value="'.$kw.'"'; ?>>
                                         <input type="hidden" name="filter">
@@ -156,14 +51,13 @@ session_start();
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
                                         <a class="dropdown-item" href="#">Mới nhất</a>
-                                        <a class="dropdown-item" href="#">Phổ biến</a>
                                         <a class="dropdown-item" href="#">Nhiều đánh giá</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="d-flex flex-row-reverse bd-highlight ">
-                                <form action="shop.php?tab=2" id="form-records-limit" method="post">
+                                <form action="<?=$href?>" id="form-records-limit" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select" onchange="document.forms['form-records-limit'].submit();">
                                         <option disabled selected>Records Limit</option>
                                         <?php foreach ([8, 12, 16, 20] as $limit): ?>
@@ -181,12 +75,12 @@ session_start();
                         </div>
                     </div>
                     <?php
-                    //$listSP = sanPham_loadAll();
                     foreach ($listSP as $sp) {
-                        $img = "../images/sanPham/" . $sp["hinh"];
+                        $img = "images/sanPham/" . $sp["hinh"];
+                        $hrefCT = 'index.php?act=chiTietSP&idSP=' . $sp["id"] . '';
                         echo '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
-                                <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <a href="'.$hrefCT.'" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                     <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
                                 </a>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
@@ -196,14 +90,14 @@ session_start();
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="detail.php?tab=3&idSP=' . $sp["id"] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
-                                    <form action="cart.php?tab=4&act=themSP" class="btn btn-sm text-dark p-0" method="post">
+                                    <a href="'.$hrefCT.'" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                                    <form action="index.php?act=themGioHang" class="btn btn-sm text-dark p-0" method="post">
                                     <input type="hidden" name="id" value="'.$sp["id"].'">
                                     <input type="hidden" name="tenSP" value="'.$sp["tenSanPham"].'">
                                     <input type="hidden" name="hinh" value="'.$sp["hinh"].'">
                                     <input type="hidden" name="gia" value="'.$sp["gia"].'">
                                     <input type="hidden" name="soLuong" value="1">
-                                    <button type="submit" name="themSP" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
+                                    <button type="submit" name="themGioHang" class="btn-addtocart"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</button>
                                     </form>
                                 </div>
                             </div>
@@ -214,10 +108,12 @@ session_start();
                         <nav class="">
                             <ul class="pagination justify-content-center">
                                 <?php
-                                $href = "?tab=2&page=";
-                                if (isset($_GET["idLH"])) {
-                                    $href = "?tab=2&idLH=" . $_GET["idLH"] . "&page=";
+                                $href = "index.php?act=sanPham";
+                                if (isset($idLH)) {
+                                    $href .= ("&idLH=".$idLH);
                                 }
+
+                                $href .= "&page=";
                                 ?>
                                 <li class="page-item text-center <?php if ($page <= 1) {
                                     echo 'disabled';
@@ -234,7 +130,7 @@ session_start();
                                 <li class="page-item <?php if ($page == $i) {
                                         echo 'active';
                                     } ?>">
-                                    <a class="page-link" href="<?php echo "shop.php" . $href . $i; ?>">
+                                    <a class="page-link" href="<?php echo $href . $i; ?>">
                                         <?= $i; ?>
                                     </a>
                                 </li>
@@ -259,27 +155,3 @@ session_start();
         </div>
     </div>
     <!-- Shop End -->
-
-
-    <!-- Footer Start -->
-    <?php
-    include "footer.php";
-    ?>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/easing/easing.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <script src="../mail/jqBootstrapValidation.min.js"></script>
-    <script src="../mail/contact.js"></script>
-
-    <script src="../js/main.js"></script>
-</body>
-
-</html>

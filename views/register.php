@@ -68,10 +68,10 @@ if (isset($_POST["register"])) {
                             </div>
                             <?php
                             if (isset($thongBao)) {
-                                $class = "text-danger";
+                                $class = "alert alert-danger";
                                 if ($isSuccess)
                                 {
-                                    $class = "text-success";
+                                    $class = "alert alert-success";
                                 }
 
                                 echo '<div class="'.$class.'" role="alert">

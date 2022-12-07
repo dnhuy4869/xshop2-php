@@ -1,6 +1,6 @@
 <?php 
-function hoaDon_addOne($hoTen, $email, $soDT, $diaChi, $idNguoiDung, $pttt) {
-    $sql = "insert into hoaDon(hoTen, email, soDT, diaChi, idNguoiDung, pttt) values ('$hoTen', '$email', '$soDT', '$diaChi', '$idNguoiDung', '$pttt')";
+function hoaDon_addOne($hoTen, $email, $soDT, $diaChi, $idNguoiDung, $pttt, $ngayDatHang) {
+    $sql = "insert into hoaDon(hoTen, email, soDT, diaChi, idNguoiDung, pttt, ngayDatHang) values ('$hoTen', '$email', '$soDT', '$diaChi', '$idNguoiDung', '$pttt', '$ngayDatHang')";
     return pdo_execute_lastinsertid($sql);
 }
 

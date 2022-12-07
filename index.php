@@ -52,24 +52,265 @@ session_start();
     include "models/pdo.php";
     include "models/loaiHang.php";
     include "models/sanPham.php";
+    include "models/nguoiDung.php";
+    include "models/hoaDon.php";
 
     if (!isset($_SESSION["vuaMoiXem"])) {
         $_SESSION["vuaMoiXem"] = [];
     }
 
-    if (!isset($_GET["act"]) || $_GET["act"] != "") {
+    if (!isset($_SESSION["gioHang"])) {
+        $_SESSION["gioHang"] = [];
+    }
+
+    include "views/topbar.php";
+
+    $dsLH = loaiHang_loadLimit(10);
+    include "views/sidebar.php";
+
+    if (!isset($_GET["act"]) || $_GET["act"] === "") {
         include "views/home.php";
     }
 
     $act = $_GET["act"];
 
-    switch ($act)
-    {
-        case "trangChu"
-    }
+    switch ($act) {
+        case "trangChu": {
+                $dsLH = loaiHang_loadLimit(6);
+                $spThinhHanh = sanPham_loadThinhHanh(8);
 
-    include "views/topbar.php";
-    include "views/sidebar.php";
+                include "views/home.php";
+
+                break;
+            }
+        case "sanPham": {
+                if (isset($_POST['records-limit'])) {
+                    $_SESSION['records-limit'] = $_POST['records-limit'];
+                }
+
+                if (isset($_GET["idLH"])) {
+                    $idLH = (int) $_GET["idLH"];
+                } else {
+                    $idLH = null;
+                }
+
+                if (isset($_POST["filter"]) || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
+                    if (isset($_POST["filter"])) {
+                        $_SESSION['kw'] = $_POST['kw'];
+                    }
+
+                    $kw = $_SESSION["kw"];
+                } else {
+                    $kw = null;
+                }
+
+                $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 8;
+                $page = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+                $paginationStart = ($page - 1) * $limit;
+
+                $sql1 = "SELECT * FROM sanpham";
+                $sql1 .= " where 1=1";
+
+                if (isset($idLH)) {
+                    $sql1 .= " and idLoaiHang=$idLH";
+                }
+
+                if (isset($kw)) {
+                    $sql1 .= " and tenSanPham like '%$kw%'";
+                }
+
+                $sql1 .= " LIMIT $paginationStart, $limit";
+
+                $sql2 = "SELECT count(id) AS id FROM sanpham";
+                $sql2 .= " where 1=1";
+
+                if (isset($idLH)) {
+                    $sql2 .= " and idLoaiHang=$idLH";
+                }
+
+                if (isset($kw)) {
+                    $sql2 .= " and tenSanPham like '%$kw%'";
+                }
+
+                $listSP = pdo_query($sql1);
+                $sql = pdo_query($sql2);
+
+                $allRecrods = $sql[0]['id'];
+                $totoalPages = ceil($allRecrods / $limit);
+
+                $prev = $page - 1;
+                $next = $page + 1;
+
+                include "views/product.php";
+
+                break;
+            }
+        case "chiTietSP": {
+                $idSP = $_GET["idSP"];
+
+                sanPham_tangLuotXem($idSP);
+
+                $currSP = sanPham_loadOne($idSP);
+                $spThinhHanh = sanPham_loadLienQuan($currSP["idLoaiHang"], 5);
+
+                include "views/detail.php";
+
+                break;
+            }
+        case "gioHang": {
+                if (!isset($_SESSION["user"])) {
+                    $thongBao = "Vui lòng đăng nhập để mua hàng";
+                } else if (empty($_SESSION["gioHang"])) {
+                    $thongBao = "Giỏ hàng đang rỗng";
+                } else {
+                    $thongBao = null;
+                }
+    
+                include "views/cart.php";
+
+                break;
+            }
+        case "themGioHang": {
+                if (isset($_POST["themGioHang"])) {
+                    $id = $_POST["id"];
+                    $tenSP = $_POST["tenSP"];
+                    $hinh = $_POST["hinh"];
+                    $gia = (int) $_POST["gia"];
+                    $soLuong = (int) $_POST["soLuong"];
+                    $tongTien = $soLuong * $gia;
+
+                    $newSP = [
+                        "id" => $id,
+                        "tenSP" => $tenSP,
+                        "hinh" => $hinh,
+                        "gia" => $gia,
+                        "soLuong" => $soLuong,
+                        "tongTien" => $tongTien
+                    ];
+
+                    $isExist = false;
+                    $i = 0;
+
+                    foreach ($_SESSION["gioHang"] as $cart) {
+                        if ($cart["id"] == $id) {
+                            $isExist = true;
+                            break;
+                        }
+
+                        $i++;
+                    }
+
+                    if (!$isExist) {
+                        array_push($_SESSION["gioHang"], $newSP);
+                    } else {
+                        $cart = $_SESSION["gioHang"][$i];
+                        $currSL = (int) $cart["soLuong"];
+                        $currSL += $soLuong;
+                        $_SESSION["gioHang"][$i]["soLuong"] = $currSL;
+
+                        $gia = (int) $cart["gia"];
+                        $tongTien = $currSL * $gia;
+                        $_SESSION["gioHang"][$i]["tongTien"] = $tongTien;
+                    }
+                }
+
+                echo ("<script>location.href = 'index.php?act=gioHang';</script>");
+                break;
+            }
+        case "xoaGioHang": {
+                if (isset($_GET["offset"])) {
+                    array_splice($_SESSION["gioHang"], $_GET["offset"], 1);
+                }
+
+                echo ("<script>location.href = 'index.php?act=gioHang';</script>");
+                break;
+            }
+        case "hoaDon": {
+                if (!isset($_SESSION["user"])) {
+                    header("location: login.php");
+                }
+
+                if (isset($_POST['records-limit'])) {
+                    $_SESSION['records-limit'] = $_POST['records-limit'];
+                }
+
+                $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 8;
+                $page = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+                $paginationStart = ($page - 1) * $limit;
+
+                $idND = $_SESSION["user"]["id"];
+                $listHD = pdo_query("SELECT * FROM hoadon where idNguoiDung='$idND' LIMIT $paginationStart, $limit");
+                $sql = pdo_query("SELECT count(id) AS id FROM hoadon where idNguoiDung='$idND'");
+
+                $allRecrods = $sql[0]['id'];
+
+                $totoalPages = ceil($allRecrods / $limit);
+
+                $prev = $page - 1;
+                $next = $page + 1;
+
+                include "views/bill.php";
+
+                break;
+            }
+        case "thanhToan": {
+                if (!isset($_SESSION["user"]) || empty($_SESSION["gioHang"])) {
+                    echo ("<script>location.href = 'index.php?act=gioHang';</script>");
+                }
+
+                include "views/checkout.php";
+
+                break;
+            }
+        case "xuatHoaDon": {
+                if (isset($_POST["thanhToan"])) {
+                    $hoTen = $_POST["hoTen"];
+                    $email = $_POST["email"];
+                    $soDT = $_POST["soDT"];
+                    $diaChi = $_POST["diaChi"];
+                    $pttt = $_POST["pttt"];
+                    $idND = $_SESSION["user"]["id"];
+                    $ngayDatHang = date("d-m-Y");
+
+                    $idHD = hoaDon_addOne($hoTen, $email, $soDT, $diaChi, $idND, $pttt, $ngayDatHang);
+
+                    foreach ($_SESSION["gioHang"] as $cart) {
+                        hoaDonCT_addOne($cart["id"], $idHD, $cart["soLuong"], $cart["tenSP"], $cart["hinh"], $cart["gia"]);
+                    }
+
+                    unset($_SESSION['gioHang']);
+
+                    echo ("<script>location.href = 'index.php?act=chiTietHD&idHD=$idHD';</script>");
+                }
+
+                break;
+            }
+        case "chiTietHD": {
+                $idHD = $_GET["idHD"];
+                $currHD = hoaDon_loadOne($idHD);
+                $listCT = hoadDonCT_loadById($idHD);
+
+                include "views/billct.php";
+
+                break;
+            }
+        case "dangXuat": {
+                if (isset($_SESSION['user'])) {
+                    unset($_SESSION['user']);
+                }
+
+                echo ("<script>location.href = 'index.php?act=trangChu';</script>");
+                break;
+            }
+        default: {
+                $dsLH = loaiHang_loadLimit(6);
+                $spThinhHanh = sanPham_loadThinhHanh(8);
+
+                include "views/home.php";
+
+                break;
+            }
+    }
 
     include "views/footer.php";
 

@@ -12,7 +12,7 @@ if (isset($_POST["login"])) {
     } else {
         $_SESSION["user"] = $result;
 
-        echo ("<script>location.href = 'home.php';</script>");
+        echo ("<script>location.href = '../index.php?act=trangChu';</script>");
     }
 }
 ?>
