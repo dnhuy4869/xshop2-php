@@ -36,6 +36,17 @@ function sanPham_tangLuotXem($id)
     pdo_execute($sql);
 }
 
+function sanPham_kTraDaMua($idNguoiDung, $idSanPham) {
+    $sql = "select * from hoaDon, chitiethoadon where idNguoiDung='$idNguoiDung' and idSanPham='$idSanPham'";
+    $result = pdo_query_one($sql);
+
+    if (isset($result) && $result) {
+        return true;
+    }
+
+    return false;
+}
+
 function sanPham_loadOne($id)
 {
     $sql = "select * from sanpham where id=" . $id;

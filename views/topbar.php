@@ -53,7 +53,7 @@
                 <i class="fas fa-heart text-primary"></i>
                 <span class="badge">0</span>
             </a>
-            <a href="cart.php?tab=3" class="btn border">
+            <a href="index.php?act=gioHang" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
                 <span class="badge">0</span>
             </a>

@@ -54,6 +54,7 @@ session_start();
     include "models/sanPham.php";
     include "models/nguoiDung.php";
     include "models/hoaDon.php";
+    include "models/binhLuan.php";
 
     if (!isset($_SESSION["vuaMoiXem"])) {
         $_SESSION["vuaMoiXem"] = [];
@@ -153,10 +154,27 @@ session_start();
                 $currSP = sanPham_loadOne($idSP);
                 $spThinhHanh = sanPham_loadLienQuan($currSP["idLoaiHang"], 5);
 
+                $tongSoBL = binhLuan_tongSoBL($idSP);
+                $listBL = binhLuan_loadLimit(); 
+
                 include "views/detail.php";
 
                 break;
             }
+        case "themBinhLuan": {
+            if (isset($_POST["themBinhLuan"])) {
+                    $idSanPham = $_POST["idSanPham"];
+                    $idNguoiDung = $_POST["idNguoiDung"];
+                    $noiDung = $_POST["noiDung"];
+                    $ngayBinhLuan = date("d-m-Y");
+
+                    binhLuan_addOne($idNguoiDung, $idSanPham, $ngayBinhLuan, $noiDung);
+
+                    echo ("<script>location.href = 'index.php?act=chiTietSP&idSP=$idSanPham';</script>");
+            }
+
+                break;
+        }
         case "gioHang": {
                 if (!isset($_SESSION["user"])) {
                     $thongBao = "Vui lòng đăng nhập để mua hàng";

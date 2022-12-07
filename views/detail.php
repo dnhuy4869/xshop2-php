@@ -32,7 +32,7 @@
                         <?php echo $currSP["tenSanPham"]; ?>
                     </h3>
                     <div class="d-flex mb-3">
-                        <small class="pt-1">(50 Đánh giá)</small>
+                        <small class="pt-1">(<?=$tongSoBL?> Bình luận)</small>
                     </div>
                     <h3 class="font-weight-semi-bold mb-4">$
                         <?php echo $currSP["gia"]; ?>
@@ -66,7 +66,7 @@
 
                     </form>
                     <div class="d-flex pt-2">
-                        <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
+                        <p class="text-dark font-weight-medium mb-0 mr-2">Chia sẻ:</p>
                         <div class="d-inline-flex">
                             <a class="text-dark px-2" href="">
                                 <i class="fab fa-facebook-f"></i>
@@ -88,7 +88,7 @@
                 <div class="col">
                     <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                         <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Mô tả</a>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Đánh giá (0)</a>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Bình luận (<?=$tongSoBL?>)</a>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-pane-1">
@@ -100,58 +100,54 @@
                         <div class="tab-pane fade" id="tab-pane-3">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h4 class="mb-4">1 review for "
+                                    <h4 class="mb-4"><?=$tongSoBL?> bình luận cho "
                                         <?php echo $currSP["tenSanPham"]; ?>"
                                     </h4>
-                                    <div class="media mb-4">
-                                        <img src="../img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1"
-                                            style="width: 45px;">
-                                        <div class="media-body">
-                                            <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                            <div class="text-primary mb-2">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
+                                    <?php 
+                                        foreach ( $listBL as $bl) {
+                                        $currUser = nguoiDung_loadOne($bl["idNguoiDung"]);
+                                        $imgPath = "images/nguoiDung/" . $currUser["hinh"];
+
+                                        echo '<div class="media mb-4">
+                                            <img src="'.$imgPath.'" alt="Image" class="img-fluid mr-3 mt-1"
+                                                style="width: 45px; height: 45px;">
+                                            <div class="media-body">
+                                                <h6>'.$currUser["tenTaiKhoan"].'<small> - <i>'.$bl["ngayBinhLuan"].'</i></small></h6>
+                                                <p>'.$bl["noiDung"].'</p>
                                             </div>
-                                            <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam
-                                                ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod
-                                                ipsum.</p>
-                                        </div>
-                                    </div>
+                                        </div>';
+                                        }
+                                    ?>
+                                    
                                 </div>
                                 <div class="col-md-6">
-                                    <h4 class="mb-4">Leave a review</h4>
-                                    <small>Your email address will not be published. Required fields are marked
-                                        *</small>
-                                    <div class="d-flex my-3">
-                                        <p class="mb-0 mr-2">Your Rating * :</p>
-                                        <div class="text-primary">
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <form>
+                                    <h4 class="mb-4">Bình luận</h4>
+                                    <?php 
+                                        if (!isset($_SESSION["user"])) {
+                                            echo '<div class="alert alert-danger" role="alert">
+                                               Vui lòng đăng nhập để bình luận
+                                            </div>';
+                                        } 
+                                        else if (!sanPham_kTraDaMua($_SESSION["user"]["id"], $currSP["id"])) {
+                                            echo '<div class="alert alert-danger" role="alert">
+                                               Vui lòng mua hàng để bình luận
+                                            </div>';
+                                        }
+                                        else {
+                                    ?>
+                                    <small class="d-block mb-2">Địa chỉ mail của bạn sẽ không được công khai. Những trường có dấu * là bắt buộc</small>
+                                    <form action="index.php?act=themBinhLuan" method="post">
                                         <div class="form-group">
-                                            <label for="message">Your Review *</label>
-                                            <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="name">Your Name *</label>
-                                            <input type="text" class="form-control" id="name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Your Email *</label>
-                                            <input type="email" class="form-control" id="email">
+                                            <label for="message">Nội dung *</label>
+                                            <textarea name="noiDung" cols="30" rows="5" class="form-control"></textarea>
                                         </div>
                                         <div class="form-group mb-0">
-                                            <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                        <input type="hidden" name="idSanPham" value="<?= $currSP["id"] ?>">
+                                        <input type="hidden" name="idNguoiDung" value="<?= $_SESSION["user"]["id"] ?>">
+                                            <input type="submit" name="themBinhLuan" value="Thêm bình luận" class="btn btn-primary px-3">
                                         </div>
                                     </form>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
