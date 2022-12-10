@@ -73,7 +73,7 @@ session_start();
     include "views/sidebar.php";
 
     $act = "trangChu";
-    if (isset($_GET["act"])) {
+    if (isset($_GET["act"]) && $_GET["act"] !== "") {
         $act = $_GET["act"];
     }
 

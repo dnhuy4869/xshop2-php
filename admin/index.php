@@ -7,7 +7,7 @@ session_start();
 
 if (
     !isset($_SESSION["user"])
-    || (int)$_SESSION["user"]["vaiTro"] !== 0
+    || (int)$_SESSION["user"]["vaiTro"] != 0
 ) {
     header("location: ../index.php?act=trangChu");
 }

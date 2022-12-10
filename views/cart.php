@@ -81,7 +81,7 @@
                     </div>
                     <input type="hidden" name="tongSP" value="<?= $tongSP ?>">
                     <input type="hidden" name="tongTien" value="<?= $tongTien ?>">
-                    <button type="submit" name="datHang" class="btn btn-block btn-primary my-3 py-3">Đặt hàng</button>
+                    <button type="submit" name="thanhToan" class="btn btn-block btn-primary my-3 py-3">Đặt hàng</button>
                 </div>
             </form>
             <?php
