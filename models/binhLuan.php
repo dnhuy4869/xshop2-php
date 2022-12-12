@@ -19,4 +19,10 @@ function binhLuan_loadLimit($idSP, $limit = 5)
     return $listLH;
 }
 
+function binhLuan_deleteOne($id)
+{
+    $sql = "delete from binhluan where id=" . $id;
+    pdo_execute($sql);
+}
+
 ?>

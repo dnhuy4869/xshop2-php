@@ -23,4 +23,10 @@ function hoadDonCT_loadById($id)
     return $listLH;
 }
 
+function hoaDon_deleteOne($id)
+{
+    $sql = "delete from hoadon where id=" . $id;
+    pdo_execute($sql);
+}
+
 ?>

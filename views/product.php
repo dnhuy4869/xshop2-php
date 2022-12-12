@@ -1,6 +1,6 @@
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <div class="d-flex flex-column align-items-center justify-content-center py-5">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Cake Shop</h1>
         <div class="d-inline-flex">
             <p class="m-0"><a href="">Trang chủ</a></p>
@@ -19,7 +19,6 @@
 
         <!-- Shop Sidebar End -->
 
-
         <!-- Shop Product Start -->
         <div class="col-lg-12 col-md-12">
             <div class="row pb-3">
@@ -34,15 +33,18 @@
                             ?>
                             <form action="<?= $href ?>" id="filter-form" method="post">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="kw" placeholder="Tìm theo tên" <?php
-                                        if (isset($_SESSION["kw"]) && $_SESSION["kw"] !=="")
-                                            echo 'value="' . $kw . '"'; ?>>
+                                    <input type="text" class="form-control" name="kw" placeholder="Tìm theo tên" 
+                                    <?php
+                                        if (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "") {
+                                            echo 'value="' . $_SESSION["kw"] . '"';
+                                        }
+                                    ?>>
                                     <input type="hidden" name="filter">
-                                    <div class="input-group-append" onclick="document.forms['filter-form'].submit();">
-                                        <span class="input-group-text bg-transparent text-primary">
+                                    <button class="input-group-append d-flex align-items-center" style="background: none; outline: none; border: solid 1px #ddd;" onclick="document.forms['filter-form'].submit();">
+                                        <span class="input-group-text bg-transparent text-primary" style="background: none; outline: none; border: none;">
                                             <i class="fa fa-search"></i>
                                         </span>
-                                    </div>
+                                    </button>
                                 </div>
                             </form>
                             <div class="d-flex flex-row-reverse bd-highlight ml-4">
@@ -95,7 +97,7 @@
                                 <a href="' . $hrefCT . '" class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                     <img class="img-fluid w-100" style="height: 300px;" src="' . $img . '" alt="">
                                 </a>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3 px-2">
                                     <h6 class="text-truncate mb-3 px-1">' . $sp["tenSanPham"] . '</h6>
                                     <div class="d-flex justify-content-center">
                                         <h6>$' . $sp["gia"] . '</h6>

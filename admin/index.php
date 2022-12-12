@@ -52,13 +52,18 @@ if (
                     <span class="mdi mdi-menu"></span>
                 </button>
                 <div class="search-field d-none d-xl-block">
-                    <form class="d-flex align-items-center h-100" action="#">
+                    <form class="d-flex align-items-center h-100" action="index.php?tab=2&act=listSP" method="post">
                         <div class="input-group">
-                            <div class="input-group-prepend bg-transparent">
+                            <button class="input-group-prepend bg-transparent" name="timKiemSP" type="submit">
                                 <i class="input-group-text border-0 mdi mdi-magnify"></i>
-                            </div>
-                            <input type="text" class="form-control bg-transparent border-0"
-                                placeholder="Search products">
+                            </button>
+                            <input type="text" name="keyWord" class="form-control bg-transparent border-0"
+                            <?php
+                                        if (isset($_SESSION["keyWord"]) && $_SESSION["keyWord"] !== "") {
+                                            echo 'value="' . $_SESSION["keyWord"] . '"';
+                                        }
+                                    ?>
+                                placeholder="Tìm kiếm sản phẩm">
                         </div>
                     </form>
                 </div>
@@ -67,21 +72,24 @@ if (
                         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown"
                             aria-expanded="false">
                             <div class="nav-profile-img">
-                                <img src="assets/images/faces/face28.png" alt="image">
+                                <?php 
+                                    $userImg = "../images/nguoiDung/". $_SESSION["user"]["hinh"];
+                                ?>
+                                <img src="<?=$userImg?>" alt="">
                             </div>
                             <div class="nav-profile-text">
-                                <p class="mb-1 text-black">Henry Klein</p>
+                                <p class="mb-1 text-black"><?=$_SESSION["user"]["tenTaiKhoan"]?></p>
                             </div>
                         </a>
                         <div class="dropdown-menu navbar-dropdown dropdown-menu-right p-0 border-0 font-size-sm"
                             aria-labelledby="profileDropdown" data-x-placement="bottom-end">
                             <div class="p-3 text-center bg-primary">
                                 <img class="img-avatar img-avatar48 img-avatar-thumb"
-                                    src="assets/images/faces/face28.png" alt="">
+                                    src="<?=$userImg?>" alt="">
                             </div>
                             <div class="p-2">
                                 <a class="dropdown-item py-1 d-flex align-items-center justify-content-between"
-                                    href="#">
+                                    href="../index.php?act=dangXuat">
                                     <span>Log Out</span>
                                     <i class="mdi mdi-logout ml-1"></i>
                                 </a>
@@ -135,6 +143,18 @@ if (
                             'href' => "index.php?tab=3&act=listND",
                             "icon" => "mdi mdi-account menu-icon"
                         ],
+                        (object) [
+                            'tab' => 4,
+                            'displayName' => 'Hóa Đơn',
+                            'href' => "index.php?tab=4&act=listHD",
+                            "icon" => "mdi mdi-book menu-icon"
+                        ],
+                        (object) [
+                            'tab' => 5,
+                            'displayName' => 'Bình Luận',
+                            'href' => "index.php?tab=5&act=listBL",
+                            "icon" => "mdi mdi-message menu-icon"
+                        ],
                     ];
 
                     $tab = 1;
@@ -165,6 +185,8 @@ if (
             include "../models/loaiHang.php";
             include "../models/sanPham.php";
             include "../models/nguoiDung.php";
+            include "../models/hoaDon.php";
+            include "../models/binhLuan.php";
 
             $act = "listLH";
 
@@ -376,6 +398,44 @@ if (
 
                         break;
                     }
+                case 4: {
+                    switch ($act) {
+                        case "listHD": {
+                            include "hoaDon/list.php";
+                            break;
+                        }
+                        case "deleteHD": {
+                            if (isset($_GET["id"])) {
+                                $id = $_GET["id"];
+
+                                hoaDon_deleteOne($id);
+                            }
+
+                            echo ("<script>location.href = 'index.php?tab=4&act=listHD';</script>");
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+                case 5: {
+                    switch ($act) {
+                        case "listBL": {
+                            include "binhLuan/list.php";
+                            break;
+                        }
+                        case "deleteBL": {
+                            if (isset($_GET["id"])) {
+                                $id = $_GET["id"];
+
+                                binhLuan_deleteOne($id);
+                            }
+
+                            echo ("<script>location.href = 'index.php?tab=5&act=listBL';</script>");
+                            break;
+                        }
+                    }
+                }
             }
             ?>
             <!-- main-panel ends -->

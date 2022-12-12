@@ -6,10 +6,10 @@
     $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
     $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
     $paginationStart = ($page - 1) * $limit;
-    $listND = pdo_query("SELECT * FROM nguoiDung LIMIT $paginationStart, $limit");
+    $listND = pdo_query("SELECT * FROM hoadon LIMIT $paginationStart, $limit");
 
     // Get total records
-    $sql = pdo_query("SELECT count(id) AS id FROM nguoiDung");
+    $sql = pdo_query("SELECT count(id) AS id FROM hoadon");
     $allRecrods = $sql[0]['id'];
   
     // Calculate total pages
@@ -25,15 +25,13 @@
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Danh sách người dùng</h4>
-
+                    <div class="card-body"> 
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <a href="index.php?tab=3&act=addNDForm"><button class="btn btn-success" style="min-width: 140px;">Thêm mới</button></a>
+                        <h4 class="card-title">Danh sách hóa đơn</h4>
 
                             <!-- Select dropdown -->
                             <div class="d-flex flex-row-reverse bd-highlight ">
-                                <form action="index.php?tab=3&act=listND" method="post">
+                                <form action="index.php?tab=4&act=listHD" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select">
                                         <option disabled selected>Giới hạn số lượng</option>
                                         <?php foreach([5,7,10,12] as $limit) : ?>
@@ -52,24 +50,33 @@
                             <thead>
                                 <tr>
                                     <th>ID </th>
-                                    <th>Tên tài khoản</th>
-                                    <th>Hình</th>
-                                    <th style="width: 8.33%">Thao tác</th>
+                                    <th>Họ tên</th>
+                                    <th>Ngày đặt hàng</th>
+                                    <th>Phương thức thanh toán</th>
+                                    <th style="width: 4.33%">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                     foreach ($listND as $lh) {
-                                        $editHref = "index.php?tab=3&act=editNDForm&id=".$lh["id"];
-                                        $deleteHref = "index.php?tab=3&act=deleteND&id=".$lh["id"];
-                                        $img = "<img src='../images/nguoiDung/".$lh["hinh"]."' />";
+                                        $deleteHref = "index.php?tab=4&act=deleteHD&id=".$lh["id"];
+                                        switch ((int)$lh["pttt"]) {
+                                            case 0: {
+                                                $pttt = "Chuyển khoản ngân hàng";
+                                                break;
+                                            }
+                                            case 1: {
+                                                $pttt = "Thanh toán khi nhận hàng";
+                                                break;
+                                            }
+                                        }
 
                                         echo '<tr>
                                                 <td> '.$lh["id"].' </td>
-                                                <td> '.$lh["tenTaiKhoan"].' </td>
-                                                <td> '.$img.' </td>
+                                                <td> '.$lh["hoTen"].' </td>
+                                                <td> '.$lh["ngayDatHang"].' </td>
+                                                <td> '.$pttt.' </td>
                                                 <td>
-                                                    <a href='.$editHref.'><input type="button" class="btn btn-success" value="Sửa"></input></a>
                                                     <a href='.$deleteHref.'><input type="button" class="btn btn-danger" value="Xóa"></input></a>
                                                 </td>
                                               </tr>';
@@ -80,21 +87,24 @@
 
                         <!-- Pagination -->
                         <nav class="mt-3 float-right">
+                            <?php 
+                                $href = "?tab=4&act=listHD";
+                            ?>
                             <ul class="pagination justify-content-center">
                                 <li class="page-item text-center <?php if($page <= 1){ echo 'disabled'; } ?>">
                                     <a class="page-link"
-                                        href="<?php if($page <= 1){ echo '#'; } else { echo "?tab=1&act=listLH&page=" . $prev; } ?>"><<</a>
+                                        href="<?php if($page <= 1){ echo '#'; } else { echo $href ."&page=" . $prev; } ?>"><<</a>
                                 </li>
 
                                 <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                                 <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                                    <a class="page-link" href="index.php?tab=1&act=listLH&page=<?= $i; ?>"> <?= $i; ?> </a>
+                                    <a class="page-link" href="<?php echo "index.php". $href ."&page=" ?><?= $i; ?>"> <?= $i; ?> </a>
                                 </li>
                                 <?php endfor; ?>
 
                                 <li class="page-item text-center <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
                                     <a class="page-link"
-                                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?tab=1&act=listLH&page=". $next; } ?>">>></a>
+                                        href="<?php if($page >= $totoalPages){ echo '#'; } else { echo $href ."&page=". $next; } ?>">>></a>
                                 </li>
                             </ul>
                         </nav>

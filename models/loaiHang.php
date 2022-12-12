@@ -13,6 +13,13 @@ function loaiHang_loadLimit($limit)
     return $listLH;
 }
 
+function loaiHang_loadRandom($limit)
+{
+    $sql = "select * from loaihang order by rand() limit ".(string)$limit;
+    $listLH = pdo_query($sql);
+    return $listLH;
+}
+
 function loaiHang_loadOne($id)
 {
     $sql = "select * from loaihang where id=" . $id;

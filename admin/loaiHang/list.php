@@ -35,7 +35,7 @@
                             <div class="d-flex flex-row-reverse bd-highlight ">
                                 <form action="index.php?tab=1&act=listLH" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select">
-                                        <option disabled selected>Records Limit</option>
+                                        <option disabled selected>Giới hạn số lượng</option>
                                         <?php foreach([5,7,10,12] as $limit) : ?>
                                         <option
                                             <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>

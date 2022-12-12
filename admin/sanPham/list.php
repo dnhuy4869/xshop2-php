@@ -6,10 +6,38 @@
     $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
     $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
     $paginationStart = ($page - 1) * $limit;
-    $listSP = pdo_query("SELECT * FROM sanpham LIMIT $paginationStart, $limit");
+
+    if (isset($_POST["timKiemSP"]) 
+        || (isset($_SESSION["keyWord"]) && $_SESSION["keyWord"] !== "")) {
+                    if (isset($_POST["timKiemSP"])) {
+                        $_SESSION['keyWord'] = $_POST['keyWord'];
+                    }
+
+                    $keyWord = $_SESSION["keyWord"];
+                } else {
+                    $keyWord = null;
+                }
+
+    $sql1 = "SELECT * FROM sanpham";
+    $sql1 .= " where 1=1";
+
+    if (isset($keyWord)) {
+        $sql1 .= " and tenSanPham like '%$keyWord%'";
+    }
+
+    $sql1 .= " LIMIT $paginationStart, $limit";
+
+    $sql2 = "SELECT count(id) AS id FROM sanpham";
+    $sql2 .= " where 1=1";
+
+    if (isset($keyWord)) {
+        $sql2 .= " and tenSanPham like '%$keyWord%'";
+    }
+
+    $listSP = pdo_query($sql1);
 
     // Get total records
-    $sql = pdo_query("SELECT count(id) AS id FROM sanpham");
+    $sql = pdo_query($sql2);
     $allRecrods = $sql[0]['id'];
   
     // Calculate total pages
@@ -35,7 +63,7 @@
                             <div class="d-flex flex-row-reverse bd-highlight ">
                                 <form action="index.php?tab=2&act=listSP" method="post">
                                     <select name="records-limit" id="records-limit" class="custom-select">
-                                        <option disabled selected>Records Limit</option>
+                                        <option disabled selected>Giới hạn số lượng</option>
                                         <?php foreach([5,7,10,12] as $limit) : ?>
                                         <option
                                             <?php if(isset($_SESSION['records-limit']) && $_SESSION['records-limit'] == $limit) echo 'selected'; ?>

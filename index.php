@@ -67,6 +67,10 @@ session_start();
         $_SESSION["gioHang"] = [];
     }
 
+    if (!isset($_SESSION["vuaXem"])) {
+        $_SESSION["vuaXem"] = [];
+    }
+
     include "views/topbar.php";
 
     $dsLH = loaiHang_loadLimit(10);
@@ -79,7 +83,7 @@ session_start();
 
     switch ($act) {
         case "trangChu": {
-                $dsLH = loaiHang_loadLimit(6);
+                $dsLH = loaiHang_loadRandom(6);
                 $spThinhHanh = sanPham_loadThinhHanh(8);
 
                 include "views/home.php";
@@ -97,7 +101,8 @@ session_start();
                     $idLH = null;
                 }
 
-                if (isset($_POST["filter"]) || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
+                if (isset($_POST["filter"]) 
+                || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
                     if (isset($_POST["filter"])) {
                         $_SESSION['kw'] = $_POST['kw'];
                     }
@@ -178,6 +183,21 @@ session_start();
                 sanPham_tangLuotXem($idSP);
 
                 $currSP = sanPham_loadOne($idSP);
+                $vuaXem = $_SESSION["vuaXem"];
+
+                $isExist = false;
+                foreach ($vuaXem as $sp) {
+                    if ((int)$sp["id"] === (int)$currSP["id"]) {
+                        $isExist = true;
+                    }
+                }
+
+                if (!$isExist) {
+                    array_push($vuaXem, $currSP);
+                }
+
+                $_SESSION["vuaXem"] = $vuaXem;
+
                 $spThinhHanh = sanPham_loadLienQuan($currSP["idLoaiHang"], 5);
 
                 $tongSoBL = binhLuan_tongSoBL($idSP);
@@ -271,7 +291,7 @@ session_start();
             }
         case "hoaDon": {
                 if (!isset($_SESSION["user"])) {
-                    echo ("<script>location.href = 'login.php';</script>");
+                    echo ("<script>location.href = 'views/login.php';</script>");
                 }
 
                 if (isset($_POST['records-limit'])) {

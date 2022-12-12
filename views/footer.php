@@ -40,7 +40,7 @@
                                     required="required" />
                             </div>
                             <div>
-                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Dăng Ký Ngay</button>
+                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Đăng Ký Ngay</button>
                             </div>
                         </form>
                     </div>
