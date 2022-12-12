@@ -5,20 +5,42 @@ include "../models/nguoiDung.php";
 session_start();
 
 if (isset($_POST["register"])) {
+    $isError = false;
     $tenTK = $_POST["tenTK"];
     $matKhau = $_POST["matKhau"];
     $filename = $_FILES["hinh"]["name"];
-    $target_dir = "../images/nguoiDung/";
-    $target_file = $target_dir . $filename;
-    move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
 
-    if (nguoiDung_isExist($tenTK)) {
+    if (empty($tenTK) && !$isError) {
+        $isError = true;
+        $thongBao = "Vui lòng nhập tên tài khoản";
+    }
+
+    if (empty($matKhau) && !$isError) {
+        $isError = true;
+        $thongBao = "Vui lòng nhập mật khẩu";
+    }
+
+    if (empty($filename) && !$isError) {
+        $isError = true;
+        $thongBao = "Vui lòng chọn ảnh đại diện";
+    }
+
+    if (!$isError) {
+        $target_dir = "../images/nguoiDung/";
+        $target_file = $target_dir . $filename;
+        move_uploaded_file($_FILES["hinh"]["tmp_name"], $target_file);
+
+        if (nguoiDung_isExist($tenTK)) {
+            $isSuccess = false;
+            $thongBao = "Tên tài khoản đã tồn tại.";
+        } else {
+            nguoiDung_addOne($tenTK, $matKhau, "", "", 0, $filename);
+            $isSuccess = true;
+            $thongBao = "Đăng ký thành công.";
+        }
+    }
+    else {
         $isSuccess = false;
-        $thongBao = "Tên tài khoản đã tồn tại.";
-    } else {
-        nguoiDung_addOne($tenTK, $matKhau, "", "", 0, $filename);
-        $isSuccess = true;
-        $thongBao = "Đăng ký thành công.";
     }
 }
 ?>
@@ -52,11 +74,11 @@ if (isset($_POST["register"])) {
                         <form action="register.php" class="login-form" method="post" enctype='multipart/form-data'>
                             <div class="form-group">
                                 <input type="text" class="form-control rounded-left" name="tenTK"
-                                    placeholder="Tên đăng nhập" required>
+                                    placeholder="Tên đăng nhập">
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control rounded-left" name="matKhau"
-                                    placeholder="Mật khẩu" required>
+                                    placeholder="Mật khẩu">
                             </div>
                             <div class="form-group">
                                 <label>Hình</label>
@@ -69,13 +91,12 @@ if (isset($_POST["register"])) {
                             <?php
                             if (isset($thongBao)) {
                                 $class = "alert alert-danger";
-                                if ($isSuccess)
-                                {
+                                if ($isSuccess) {
                                     $class = "alert alert-success";
                                 }
 
-                                echo '<div class="'.$class.'" role="alert">
-                                '.$thongBao.'
+                                echo '<div class="' . $class . '" role="alert">
+                                ' . $thongBao . '
                               </div>';
                             }
                             ?>

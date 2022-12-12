@@ -4,15 +4,29 @@ include "../models/pdo.php";
 session_start();
 
 if (isset($_POST["login"])) {
+    $isError = false;
     $tenTK = $_POST["tenTK"];
     $matKhau = $_POST["matKhau"];
-    $result = pdo_query_one("select * from nguoidung where tenTaiKhoan='$tenTK' and matKhau='$matKhau' limit 1");
-    if (!$result) {
-        $thongBao = "Đăng nhập thất bại.";
-    } else {
-        $_SESSION["user"] = $result;
 
-        echo ("<script>location.href = '../index.php?act=trangChu';</script>");
+    if (empty($tenTK) && !$isError) {
+        $isError = true;
+        $thongBao = "Vui lòng nhập tên tài khoản";
+    }
+    
+    if (empty($matKhau) && !$isError) {
+        $isError = true;
+        $thongBao = "Vui lòng nhập mật khẩu";
+    }
+
+    if (!$isError) {
+        $result = pdo_query_one("select * from nguoidung where tenTaiKhoan='$tenTK' and matKhau='$matKhau' limit 1");
+        if (!$result) {
+            $thongBao = "Đăng nhập thất bại.";
+        } else {
+            $_SESSION["user"] = $result;
+
+            echo ("<script>location.href = '../index.php?act=trangChu';</script>");
+        }
     }
 }
 ?>
@@ -46,11 +60,11 @@ if (isset($_POST["login"])) {
                         <form action="login.php" class="login-form" method="post">
                             <div class="form-group">
                                 <input type="text" class="form-control rounded-left" name="tenTK"
-                                    placeholder="Tên đăng nhập" required>
+                                    placeholder="Tên đăng nhập">
                             </div>
                             <div class="form-group d-flex">
                                 <input type="password" class="form-control rounded-left" name="matKhau"
-                                    placeholder="Mật khẩu" required>
+                                    placeholder="Mật khẩu">
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="login"
@@ -59,7 +73,7 @@ if (isset($_POST["login"])) {
                             <?php
                             if (isset($thongBao)) {
                                 echo '<div class="alert alert-danger" role="alert">
-                                '.$thongBao.'
+                                ' . $thongBao . '
                               </div>';
                             }
                             ?>

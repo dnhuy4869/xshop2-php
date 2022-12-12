@@ -20,20 +20,27 @@
                     <h4 class="font-weight-semi-bold mb-4">Thông tin đặt hàng</h4>
                     <div class="form-group">
                         <label>Họ và tên</label>
-                        <input class="form-control" type="text" name="hoTen" placeholder="Họ và tên">
+                        <input class="form-control" type="text" name="hoTen" value="<?=$_SESSION["user"]["tenTaiKhoan"]?>" placeholder="Họ và tên">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input class="form-control" type="text" name="email" placeholder="Email">
+                        <input class="form-control" type="text" name="email" value="<?=$_SESSION["user"]["email"]?>" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label>Số điện thoại</label>
-                        <input class="form-control" type="text" name="soDT" placeholder="Số điện thoại">
+                        <input class="form-control" type="text" name="soDT" value="<?=$_SESSION["user"]["soDienThoai"]?>" placeholder="Số điện thoại">
                     </div>
                     <div class="form-group">
                         <label>Địa chỉ</label>
                         <input class="form-control" type="text" name="diaChi" placeholder="Địa chỉ">
                     </div>
+                    <?php
+                            if (isset($thongBao)) {
+                                echo '<div class="alert alert-danger" role="alert">
+                                ' . $thongBao . '
+                              </div>';
+                            }
+                            ?>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -88,8 +95,10 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="tongSP" value="<?= $tongSP ?>">
+                    <input type="hidden" name="tongTien" value="<?= $tongTien ?>">
                     <div class="card-footer border-secondary bg-transparent">
-                        <button type="submit" name="thanhToan"
+                        <button type="submit" name="xuatHoaDon"
                             class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
                     </div>
                 </div>

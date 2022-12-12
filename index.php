@@ -101,8 +101,10 @@ session_start();
                     $idLH = null;
                 }
 
-                if (isset($_POST["filter"]) 
-                || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")) {
+                if (
+                    isset($_POST["filter"])
+                    || (isset($_SESSION["kw"]) && $_SESSION["kw"] !== "")
+                ) {
                     if (isset($_POST["filter"])) {
                         $_SESSION['kw'] = $_POST['kw'];
                     }
@@ -162,8 +164,9 @@ session_start();
                         }
 
                         //var_dump($listSP);
-
-                        usort($listSP, function ($a, $b) { return $b['tongSoBL'] <=> $a['tongSoBL']; });
+    
+                        usort($listSP, function ($a, $b) {
+                            return $b['tongSoBL'] <=> $a['tongSoBL']; });
                     }
                 }
 
@@ -187,7 +190,7 @@ session_start();
 
                 $isExist = false;
                 foreach ($vuaXem as $sp) {
-                    if ((int)$sp["id"] === (int)$currSP["id"]) {
+                    if ((int) $sp["id"] === (int) $currSP["id"]) {
                         $isExist = true;
                     }
                 }
@@ -208,19 +211,28 @@ session_start();
                 break;
             }
         case "themBinhLuan": {
-            if (isset($_POST["themBinhLuan"])) {
-                    $idSanPham = $_POST["idSanPham"];
-                    $idNguoiDung = $_POST["idNguoiDung"];
+                if (isset($_POST["themBinhLuan"])) {
+                    $isError = false;
                     $noiDung = $_POST["noiDung"];
-                    $ngayBinhLuan = date("d-m-Y");
+                    $idSanPham = $_POST["idSanPham"];
 
-                    binhLuan_addOne($idNguoiDung, $idSanPham, $ngayBinhLuan, $noiDung);
+                    if (empty($noiDung) && !$isError) {
+                        $isError = true;
+                        $thongBao = "Vui lòng nhập nội dung";
+                    }
+
+                    if (!$isError) {
+                        $idNguoiDung = $_POST["idNguoiDung"];
+                        $ngayBinhLuan = date("d-m-Y");
+
+                        binhLuan_addOne($idNguoiDung, $idSanPham, $ngayBinhLuan, $noiDung);
+                    }
 
                     echo ("<script>location.href = 'index.php?act=chiTietSP&idSP=$idSanPham';</script>");
-            }
+                }
 
                 break;
-        }
+            }
         case "gioHang": {
                 if (!isset($_SESSION["user"])) {
                     $thongBao = "Vui lòng đăng nhập để mua hàng";
@@ -229,7 +241,7 @@ session_start();
                 } else {
                     $thongBao = null;
                 }
-    
+
                 include "views/cart.php";
 
                 break;
@@ -327,24 +339,60 @@ session_start();
                 break;
             }
         case "xuatHoaDon": {
-                if (isset($_POST["thanhToan"])) {
+                if (isset($_POST["xuatHoaDon"])) {
+                    $isError = false;
                     $hoTen = $_POST["hoTen"];
                     $email = $_POST["email"];
                     $soDT = $_POST["soDT"];
                     $diaChi = $_POST["diaChi"];
-                    $pttt = $_POST["pttt"];
-                    $idND = $_SESSION["user"]["id"];
-                    $ngayDatHang = date("d-m-Y");
 
-                    $idHD = hoaDon_addOne($hoTen, $email, $soDT, $diaChi, $idND, $pttt, $ngayDatHang);
-
-                    foreach ($_SESSION["gioHang"] as $cart) {
-                        hoaDonCT_addOne($cart["id"], $idHD, $cart["soLuong"], $cart["tenSP"], $cart["hinh"], $cart["gia"]);
+                    if (empty($hoTen) && !$isError) {
+                        $isError = true;
+                        $thongBao = "Vui lòng nhập họ tên";
                     }
 
-                    unset($_SESSION['gioHang']);
+                    if (empty($email) && !$isError) {
+                        $isError = true;
+                        $thongBao = "Vui lòng nhập email";
+                    }
 
-                    echo ("<script>location.href = 'index.php?act=chiTietHD&idHD=$idHD';</script>");
+                    if (empty($soDT) && !$isError) {
+                        $isError = true;
+                        $thongBao = "Vui lòng nhập số điện thoại";
+                    }
+
+                    if (empty($diaChi) && !$isError) {
+                        $isError = true;
+                        $thongBao = "Vui lòng nhập địa chỉ";
+                    }
+
+                    if (isset($_POST["pttt"])) {
+                        $pttt = $_POST["pttt"];
+                    } else {
+                        $pttt = null;
+                    }
+
+                    if (empty($pttt) && !$isError) {
+                        $isError = true;
+                        $thongBao = "Vui lòng chọn phương thức thanh toán";
+                    }
+
+                    if (!$isError) {
+                        $idND = $_SESSION["user"]["id"];
+                        $ngayDatHang = date("d-m-Y");
+
+                        $idHD = hoaDon_addOne($hoTen, $email, $soDT, $diaChi, $idND, $pttt, $ngayDatHang);
+
+                        foreach ($_SESSION["gioHang"] as $cart) {
+                            hoaDonCT_addOne($cart["id"], $idHD, $cart["soLuong"], $cart["tenSP"], $cart["hinh"], $cart["gia"]);
+                        }
+
+                        unset($_SESSION['gioHang']);
+
+                        echo ("<script>location.href = 'index.php?act=chiTietHD&idHD=$idHD';</script>");
+                    } else {
+                        include "views/checkout.php";
+                    }
                 }
 
                 break;

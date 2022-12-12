@@ -32,7 +32,7 @@
                         <?php echo $currSP["tenSanPham"]; ?>
                     </h3>
                     <div class="d-flex mb-3">
-                        <small class="pt-1">(<?=$tongSoBL?> Bình luận)</small>
+                        <small class="pt-1">(<?= $tongSoBL ?> Bình luận)</small>
                     </div>
                     <h3 class="font-weight-semi-bold mb-4">$
                         <?php echo $currSP["gia"]; ?>
@@ -88,7 +88,7 @@
                 <div class="col">
                     <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                         <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Mô tả</a>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Bình luận (<?=$tongSoBL?>)</a>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Bình luận (<?= $tongSoBL ?>)</a>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-pane-1">
@@ -100,51 +100,60 @@
                         <div class="tab-pane fade" id="tab-pane-3">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h4 class="mb-4"><?=$tongSoBL?> bình luận cho "
-                                        <?php echo $currSP["tenSanPham"]; ?>"
+                                    <h4 class="mb-4">
+                                        <?= $tongSoBL ?> bình luận cho "
+                                            <?php echo $currSP["tenSanPham"]; ?>"
                                     </h4>
-                                    <?php 
-                                        foreach ( $listBL as $bl) {
+                                    <?php
+                                    foreach ($listBL as $bl) {
                                         $currUser = nguoiDung_loadOne($bl["idNguoiDung"]);
                                         $imgPath = "images/nguoiDung/" . $currUser["hinh"];
 
                                         echo '<div class="media mb-4">
-                                            <img src="'.$imgPath.'" alt="Image" class="img-fluid mr-3 mt-1"
+                                            <img src="' . $imgPath . '" alt="Image" class="img-fluid mr-3 mt-1"
                                                 style="width: 45px; height: 45px;">
                                             <div class="media-body">
-                                                <h6>'.$currUser["tenTaiKhoan"].'<small> - <i>'.$bl["ngayBinhLuan"].'</i></small></h6>
-                                                <p>'.$bl["noiDung"].'</p>
+                                                <h6>' . $currUser["tenTaiKhoan"] . '<small> - <i>' . $bl["ngayBinhLuan"] . '</i></small></h6>
+                                                <p>' . $bl["noiDung"] . '</p>
                                             </div>
                                         </div>';
-                                        }
+                                    }
                                     ?>
-                                    
+
                                 </div>
                                 <div class="col-md-6">
                                     <h4 class="mb-4">Bình luận</h4>
-                                    <?php 
-                                        if (!isset($_SESSION["user"])) {
-                                            echo '<div class="alert alert-danger" role="alert">
+                                    <?php
+                                    if (!isset($_SESSION["user"])) {
+                                        echo '<div class="alert alert-danger" role="alert">
                                                Vui lòng đăng nhập để bình luận
                                             </div>';
-                                        } 
-                                        else if (!sanPham_kTraDaMua($_SESSION["user"]["id"], $currSP["id"])) {
-                                            echo '<div class="alert alert-danger" role="alert">
+                                    } else if (!sanPham_kTraDaMua($_SESSION["user"]["id"], $currSP["id"])) {
+                                        echo '<div class="alert alert-danger" role="alert">
                                                Vui lòng mua hàng để bình luận
                                             </div>';
-                                        }
-                                        else {
+                                    } else {
                                     ?>
-                                    <small class="d-block mb-2">Địa chỉ mail của bạn sẽ không được công khai. Những trường có dấu * là bắt buộc</small>
+                                    <small class="d-block mb-2">Địa chỉ mail của bạn sẽ không được công khai. Những
+                                        trường có dấu * là bắt buộc</small>
                                     <form action="index.php?act=themBinhLuan" method="post">
                                         <div class="form-group">
                                             <label for="message">Nội dung *</label>
-                                            <textarea name="noiDung" cols="30" rows="5" class="form-control"></textarea>
+                                            <textarea name="noiDung" cols="30" rows="5" required class="form-control"></textarea>
                                         </div>
                                         <div class="form-group mb-0">
-                                        <input type="hidden" name="idSanPham" value="<?= $currSP["id"] ?>">
-                                        <input type="hidden" name="idNguoiDung" value="<?= $_SESSION["user"]["id"] ?>">
-                                            <input type="submit" name="themBinhLuan" value="Thêm bình luận" class="btn btn-primary px-3">
+                                            <?php
+                                        if (isset($thongBao)) {
+                                            echo '<div class="alert alert-danger" role="alert">
+                                ' . $thongBao . '
+                              </div>';
+                                        }
+                                        ?>
+                                            <input type="hidden" name="idSanPham" value="<?= $currSP["id"] ?>">
+                                            <input type="hidden" name="idNguoiDung"
+                                                value="<?= $_SESSION["user"]["id"] ?>">
+                                            <input type="submit" name="themBinhLuan" value="Thêm bình luận"
+                                                class="btn btn-primary px-3">
                                         </div>
                                     </form>
                                     <?php } ?>
